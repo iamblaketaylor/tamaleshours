@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Hours</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #d4462a 0%, #8b2914 25%, #228b22 50%, #006400 75%, #d4462a 100%);
+            background-size: 400% 400%;
+            animation: mexicanGradient 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        @keyframes mexicanGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .hours-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 30px 40px 40px 40px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(212, 70, 42, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        
+        .hours-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #228b22, #ffffff, #d4462a);
+        }
+        
+        .language-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #228b22, #d4462a);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .language-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 248, 248, 0.9));
+            border-radius: 20px;
+            border: 1px solid rgba(212, 70, 42, 0.2);
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #228b22, #d4462a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .current-status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .open {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+        
+        .closed {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+        
+        .day-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .day-row:hover {
+            background: rgba(212, 70, 42, 0.1);
+            border-color: rgba(212, 70, 42, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .today {
+            background: linear-gradient(135deg, rgba(212, 70, 42, 0.15), rgba(34, 139, 34, 0.15));
+            border-color: rgba(212, 70, 42, 0.4);
+            box-shadow: 0 4px 12px rgba(212, 70, 42, 0.25);
+        }
+        
+        .day-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2d3748;
+            min-width: 100px;
+        }
+        
+        .hours-info {
+            text-align: right;
+            flex-grow: 1;
+        }
+        
+        .hours {
+            font-weight: 500;
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 2px;
+        }
+        
+        .service-type {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        
+        .delivery-only {
+            background: linear-gradient(135deg, #d4462a, #8b2914);
+            color: white;
+        }
+        
+        .pickup-delivery {
+            background: linear-gradient(135deg, #228b22, #006400);
+            color: white;
+        }
+        
+        .closed-day {
+            background: linear-gradient(135deg, #a0aec0, #718096);
+            color: white;
+        }
+        
+        .order-buttons, .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .order-btn, .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 130px;
+            justify-content: center;
+        }
+        
+        .order-btn:hover, .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .skip-btn {
+            background: linear-gradient(135deg, #ff3008, #ff6347);
+            color: white;
+        }
+        
+        .uber-btn {
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+        }
+        
+        .instagram-btn {
+            background: linear-gradient(135deg, #e4405f, #c13584);
+            color: white;
+        }
+        
+        .directions-btn {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: white;
+        }
+        
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .skip-icon {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40NzcgMiAyIDYuNDc3IDIgMTJTNi40NzcgMjIgMTIgMjJTMjIgMTcuNTIzIDIyIDEyUzE3LjUyMyAyIDEyIDJaTTEyIDIwQzcuNTg5IDIwIDQgMTYuNDExIDQgMTJTNy41ODkgNCA1IDRTMjAgNy41ODkgMjAgMTJTMTYuNDExIDIwIDEyIDIwWk0xMCAxNkwxNiAxMkwxMCA4VjE2WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+        }
+        
+        .uber-icon {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTUuNSA4LjVMMjIgMTJMMTUuNSAxNS41TDEyIDIyTDguNSAxNS41TDIgMTJMOC41IDguNUwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+        }
+        
+        .instagram-icon {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTQuNzQgMiAxNSAyIDEzIDJIMTJDMTAuNSAyIDkuNSAyIDkuNSAySDEyWk0xMiAyQzE0Ljc0IDIgMTUgMiAxNSAySDEyWk0xMiAyQzEwLjUgMiA5LjUgMiA5LjUgMkg5QzYuNzkgMiA1IDMuNzkgNSA2VjE4QzUgMjAuMjEgNi43OSAyMiA5IDIySDE1QzE3LjIxIDIyIDE5IDIwLjIxIDE5IDE4VjZDMTkgMy43OSAxNy4yMSAyIDE1IDJIMTJaTTEyIDcuNUMxNC4yMSA3LjUgMTYgOS4yOSAxNiAxMS41UzE0LjIxIDE1LjUgMTIgMTUuNVM4IDEzLjcxIDggMTEuNVM5Ljc5IDcuNSAxMiA3LjVaTTE2LjUgNi41QzE2LjUgNy4wNSAxNi4wNSA3LjUgMTUuNSA3LjVTMTQuNSA3LjA1IDE0LjUgNi41UzE0Ljk1IDYgMTUuNSA2UzE2LjUgNi40NSAxNi41IDYuNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=');
+        }
+        
+        .directions-icon {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0QzE0IDUuMSAxMy4xIDYgMTIgNkMxMC45IDYgMTAgNS4xIDEwIDRDMTAgMi45IDEwLjkgMiAxMiAyWk0yMSA5VjdMMTQuNSA2TDEzLjA5IDcuNEwxNCA5SDIxWk0xNSAxMEw2IDEyVjEwSDEzQzEzLjI2IDEwIDEzLjUgMTAuMDQgMTMuNzQgMTAuMUwxNSAxMFpNNSAyMkgxOVYyMEg1VjIyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+        }
+        
+        .reviews-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 248, 248, 0.9));
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 70, 42, 0.2);
+        }
+        
+        .reviews-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .google-logo {
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyLjU2IDEyLjI1QzIyLjU2IDExLjQ3IDIyLjQ5IDEwLjcyIDIyLjM2IDEwSDEyVjE0LjI2SDE3Ljk2QzE3LjY2IDE1Ljg5IDE2Ljc2IDE3LjE2IDE1LjM2IDE3Ljk2VjIwLjk2SDE5LjAzQzIxLjM1IDE4Ljc5IDIyLjU2IDE1Ljc1IDIyLjU2IDEyLjI1WiIgZmlsbD0iIzQyODVGNCIvPgo8cGF0aCBkPSJNMTIgMjRDMTUuMjMgMjQgMTcuOTUgMjIuOTIgMTkuMDMgMjAuOTZMMTUuMzYgMTcuOTZDMTQuMzYgMTguNjggMTMuMDkgMTkuMSAxMiAxOS4xQzguODYgMTkuMSA2LjIxIDE2LjkzIDUuMzMgMTQuMDJIMUMzLjE4IDIwLjE3IDcuMzIgMjQgMTIgMjRaIiBmaWxsPSIjMzRBODUzIi8+CjxwYXRoIGQ9Ik01LjMzIDE0LjAyQzUuMTMgMTMuMzEgNSAxMi41NyA1IDExLjhDNSAxMS4wMyA1LjEzIDEwLjI5IDUuMzMgOS41OEgxVjkuMThDMC4zMiAxMS42MSAwIDEzLjU3IDEzLjY0IDEzLjY0QzEuMzMgMTIuMTEgMS4zMyAxMC42MSA1LjMzIDE0LjAyWiIgZmlsbD0iI0ZCQkMwNCIvPgo8cGF0aCBkPSJNMTIgNC45QzEzLjMgNC45IDE0LjUgNS4zMyAxNS40MiA2LjIyTDE4LjcgMi45NEMxNi45NSAxLjMxIDE0Ljc1IDAgMTIgMEM3LjMyIDAgMy4xOCAzLjgzIDEuMDEgOS4xOEwxNC4zOCA5LjU4QzUuMjEgNi44MyA4LjUzIDQuOSAxMiA0LjlaIiBmaWxsPSIjRUE0MzM1Ii8+Cjwvc3ZnPgo=');
+            background-size: contain;
+        }
+        
+        .stars {
+            color: #fbbf24;
+            font-size: 16px;
+        }
+        
+        .review-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #228b22;
+        }
+        
+        .review-text {
+            font-style: italic;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .review-author {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 12px;
+        }
+        
+        .view-all-reviews {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .view-all-btn {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        
+        .view-all-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .note {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(237, 242, 247, 0.8), rgba(226, 232, 240, 0.8));
+            border-radius: 12px;
+            font-size: 14px;
+            color: #4a5568;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="hours-container">
+        <button class="language-toggle" onclick="switchLanguage()">🇪🇸 Español</button>
+        
+        <div class="logo-container">
+            <div style="padding: 20px; background: linear-gradient(135deg, #228b22, #ffffff, #d4462a); color: #2d3748; border-radius: 15px; font-weight: bold; font-size: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                TAMALES MEXICANOS
+                <div style="font-size: 14px; margin-top: 8px;">
+                    <a href="tel:+16048419031" style="color: #d4462a; text-decoration: none; font-weight: 600; transition: color 0.3s ease;" 
+                       onmouseover="this.style.color='#8b2914'" onmouseout="this.style.color='#d4462a'">
+                        📞 604-841-9031
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="title" id="title">Business Hours</h2>
+        
+        <div id="current-status" class="current-status"></div>
+        
+        <div class="schedule">
+            <div class="day-row" data-day="1">
+                <div class="day-name" id="monday">Monday</div>
+                <div class="hours-info">
+                    <div class="hours">9:00 AM - 9:30 PM</div>
+                    <div class="service-type delivery-only" id="monday-service">Delivery Only</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="2">
+                <div class="day-name" id="tuesday">Tuesday</div>
+                <div class="hours-info">
+                    <div class="hours" id="tuesday-hours">CLOSED</div>
+                    <div class="service-type closed-day" id="tuesday-service">Closed</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="3">
+                <div class="day-name" id="wednesday">Wednesday</div>
+                <div class="hours-info">
+                    <div class="hours" id="wednesday-hours">CLOSED</div>
+                    <div class="service-type closed-day" id="wednesday-service">Closed</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="4">
+                <div class="day-name" id="thursday">Thursday</div>
+                <div class="hours-info">
+                    <div class="hours">4:00 PM - 9:30 PM</div>
+                    <div class="service-type pickup-delivery" id="thursday-service">Pickup & Delivery</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="5">
+                <div class="day-name" id="friday">Friday</div>
+                <div class="hours-info">
+                    <div class="hours">4:00 PM - 9:30 PM</div>
+                    <div class="service-type pickup-delivery" id="friday-service">Pickup & Delivery</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="6">
+                <div class="day-name" id="saturday">Saturday</div>
+                <div class="hours-info">
+                    <div class="hours">9:00 AM - 9:30 PM</div>
+                    <div class="service-type pickup-delivery" id="saturday-service">Pickup & Delivery</div>
+                </div>
+            </div>
+            
+            <div class="day-row" data-day="0">
+                <div class="day-name" id="sunday">Sunday</div>
+                <div class="hours-info">
+                    <div class="hours">9:00 AM - 9:30 PM</div>
+                    <div class="service-type delivery-only" id="sunday-service">Delivery Only</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong id="note-label">Note:</strong> <span id="note-text">Service availability varies by day. Check the colored labels above for pickup vs delivery options.</span>
+        </div>
+        
+        <div class="order-buttons">
+            <a href="https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv" target="_blank" class="order-btn skip-btn">
+                <div class="btn-icon skip-icon"></div>
+                DoorDash
+            </a>
+            <a href="https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1" target="_blank" class="order-btn uber-btn">
+                <div class="btn-icon uber-icon"></div>
+                Uber Eats
+            </a>
+        </div>
+        
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <div class="google-logo"></div>
+                <span id="reviews-header">Google Reviews</span>
+                <div class="stars">★★★★★</div>
+                <span style="font-size: 14px; color: #666;">(4.8)</span>
+            </div>
+            
+            <div class="review-item">
+                <div class="review-text" id="review1">"Absolutely delicious tamales! The masa is perfectly steamed and the filling is so flavorful. Best Mexican food in Port Coquitlam!"</div>
+                <div class="review-author">- Maria S.</div>
+            </div>
+            
+            <div class="review-item">
+                <div class="review-text" id="review2">"Fast delivery and authentic taste. The chicken tamales remind me of my grandmother's cooking. Will definitely order again!"</div>
+                <div class="review-author">- Carlos R.</div>
+            </div>
+            
+            <div class="review-item">
+                <div class="review-text" id="review3">"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"</div>
+                <div class="review-author">- Jennifer L.</div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="https://www.instagram.com/tamalesmexicanosvan/" target="_blank" class="action-btn instagram-btn">
+                <div class="btn-icon instagram-icon"></div>
+                <span id="follow-us">Follow Us</span>
+            </a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9" target="_blank" class="action-btn directions-btn">
+                <div class="btn-icon directions-icon"></div>
+                <span id="directions">Get Directions</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let isSpanish = false;
+        
+        // Translation object
+        const translations = {
+            title: {
+                en: 'Business Hours',
+                es: 'Horarios de Atención'
+            },
+            days: {
+                monday: { en: 'Monday', es: 'Lunes' },
+                tuesday: { en: 'Tuesday', es: 'Martes' },
+                wednesday: { en: 'Wednesday', es: 'Miércoles' },
+                thursday: { en: 'Thursday', es: 'Jueves' },
+                friday: { en: 'Friday', es: 'Viernes' },
+                saturday: { en: 'Saturday', es: 'Sábado' },
+                sunday: { en: 'Sunday', es: 'Domingo' }
+            },
+            services: {
+                delivery: { en: 'Delivery Only', es: 'Solo Entrega' },
+                pickup: { en: 'Pickup & Delivery', es: 'Recoger y Entregar' },
+                closed: { en: 'Closed', es: 'Cerrado' }
+            },
+            other: {
+                note: { en: 'Note:', es: 'Nota:' },
+                noteText: { en: 'Service availability varies by day. Check the colored labels above for pickup vs delivery options.', es: 'La disponibilidad del servicio varía según el día. Consulte las etiquetas de colores para las opciones de recoger o entrega.' },
+                followUs: { en: 'Follow Us', es: 'Síguenos' },
+                directions: { en: 'Get Directions', es: 'Obtener Direcciones' },
+                reviewsHeader: { en: 'Google Reviews', es: 'Reseñas de Google' },
+                viewReviews: { en: 'View All Reviews on Google', es: 'Ver Todas las Reseñas en Google' },
+                closedHours: { en: 'CLOSED', es: 'CERRADO' }
+            },
+            reviews: {
+                review1: {
+                    en: '"Absolutely delicious tamales! The masa is perfectly steamed and the filling is so flavorful. Best Mexican food in Port Coquitlam!"',
+                    es: '"¡Tamales absolutamente deliciosos! La masa está perfectamente cocida al vapor y el relleno es muy sabroso. ¡La mejor comida mexicana en Port Coquitlam!"'
+                },
+                review2: {
+                    en: '"Fast delivery and authentic taste. The chicken tamales remind me of my grandmother\'s cooking. Will definitely order again!"',
+                    es: '"Entrega rápida y sabor auténtico. Los tamales de pollo me recuerdan a la cocina de mi abuela. ¡Definitivamente volveré a ordenar!"'
+                },
+                review3: {
+                    en: '"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"',
+                    es: '"Excelente servicio y comida increíble. Las opciones vegetarianas también son fantásticas. ¡Muy recomendable!"'
+                }
+            },
+            status: {
+                currentlyOpen: { en: 'Currently Open', es: 'Actualmente Abierto' },
+                currentlyClosed: { en: 'Currently Closed', es: 'Actualmente Cerrado' },
+                closesAt: { en: 'Closes at', es: 'Cierra a las' },
+                opensToday: { en: 'Opens today at', es: 'Abre hoy a las' },
+                nextOpen: { en: 'Next open:', es: 'Próxima apertura:' }
+            }
+        };
+        
+        function switchLanguage() {
+            isSpanish = !isSpanish;
+            const lang = isSpanish ? 'es' : 'en';
+            
+            // Update language button
+            const langBtn = document.querySelector('.language-toggle');
+            langBtn.textContent = isSpanish ? '🇺🇸 English' : '🇪🇸 Español';
+            
+            // Update title
+            document.getElementById('title').textContent = translations.title[lang];
+            
+            // Update days
+            Object.keys(translations.days).forEach(day => {
+                const element = document.getElementById(day);
+                if (element) {
+                    element.textContent = translations.days[day][lang];
+                }
+            });
+            
+            // Update services
+            document.getElementById('monday-service').textContent = translations.services.delivery[lang];
+            document.getElementById('tuesday-service').textContent = translations.services.closed[lang];
+            document.getElementById('wednesday-service').textContent = translations.services.closed[lang];
+            document.getElementById('thursday-service').textContent = translations.services.pickup[lang];
+            document.getElementById('friday-service').textContent = translations.services.pickup[lang];
+            document.getElementById('saturday-service').textContent = translations.services.pickup[lang];
+            document.getElementById('sunday-service').textContent = translations.services.delivery[lang];
+            
+            // Update closed hours text
+            document.getElementById('tuesday-hours').textContent = translations.other.closedHours[lang];
+            document.getElementById('wednesday-hours').textContent = translations.other.closedHours[lang];
+            
+            // Update other text
+            document.getElementById('note-label').textContent = translations.other.note[lang];
+            document.getElementById('note-text').textContent = translations.other.noteText[lang];
+            document.getElementById('follow-us').textContent = translations.other.followUs[lang];
+            document.getElementById('directions').textContent = translations.other.directions[lang];
+            document.getElementById('reviews-header').textContent = translations.other.reviewsHeader[lang];
+            document.getElementById('view-reviews').textContent = translations.other.viewReviews[lang];
+            
+            // Update reviews
+            document.getElementById('review1').textContent = translations.reviews.review1[lang];
+            document.getElementById('review2').textContent = translations.reviews.review2[lang];
+            document.getElementById('review3').textContent = translations.reviews.review3[lang];
+            
+            // Update status
+            updateCurrentStatus();
+        }
+        
+        function updateCurrentStatus() {
+            const now = new Date();
+            const currentDay = now.getDay();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            
+            // Highlight today
+            document.querySelectorAll('.day-row').forEach(row => {
+                row.classList.remove('today');
+                if (parseInt(row.dataset.day) === currentDay) {
+                    row.classList.add('today');
+                }
+            });
+            
+            const statusDiv = document.getElementById('current-status');
+            const lang = isSpanish ? 'es' : 'en';
+            let isOpen = false;
+            let statusText = '';
+            
+            // Define business hours
+            const hours = {
+                0: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' },
+                1: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' },
+                2: null,
+                3: null,
+                4: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' },
+                5: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' },
+                6: { start: 9 * 60, end: 21.5 * 60, service: 'pickup' }
+            };
+            
+            const todayHours = hours[currentDay];
+            
+            if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
+                isOpen = true;
+                const closeTime = Math.floor(todayHours.end / 60);
+                const closeMinutes = todayHours.end % 60;
+                const closeTimeStr = closeMinutes === 30 ? `${closeTime}:30 PM` : `${closeTime}:00 PM`;
+                
+                const serviceText = translations.services[todayHours.service][lang];
+                statusText = `${translations.status.currentlyOpen[lang]} - ${serviceText}<br>${translations.status.closesAt[lang]} ${closeTimeStr}`;
+            } else {
+                isOpen = false;
+                
+                if (todayHours && currentTime < todayHours.start) {
+                    const openTime = Math.floor(todayHours.start / 60);
+                    const openTimeStr = openTime === 9 ? '9:00 AM' : '4:00 PM';
+                    statusText = `${translations.status.currentlyClosed[lang]}<br>${translations.status.opensToday[lang]} ${openTimeStr}`;
+                } else {
+                    let nextDay = (currentDay + 1) % 7;
+                    let daysAhead = 1;
+                    
+                    while (!hours[nextDay] && daysAhead < 7) {
+                        nextDay = (nextDay + 1) % 7;
+                        daysAhead++;
+                    }
+                    
+                    if (hours[nextDay]) {
+                        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                        const dayName = translations.days[dayNames[nextDay]][lang];
+                        const openTime = Math.floor(hours[nextDay].start / 60);
+                        const openTimeStr = openTime === 9 ? '9:00 AM' : '4:00 PM';
+                        statusText = `${translations.status.currentlyClosed[lang]}<br>${translations.status.nextOpen[lang]} ${dayName} ${openTimeStr}`;
+                    } else {
+                        statusText = translations.status.currentlyClosed[lang];
+                    }
+                }
+            }
+            
+            statusDiv.innerHTML = statusText;
+            statusDiv.className = `current-status ${isOpen ? 'open' : 'closed'}`;
+        }
+        
+        // Other functions
+        function openDoorDash() {
+            window.open('https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv', '_blank');
+        }
+        
+        function openUberEats() {
+            window.open('https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1', '_blank');
+        }
+        
+        function getDirections() {
+            window.open('https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9', '_blank');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentStatus();
+            setInterval(updateCurrentStatus, 60000);
+        });
+    </script>
+</body>
+</html>
