@@ -398,7 +398,7 @@
                 <div class="day-name" id="thursday">Thursday</div>
                 <div class="hours-info">
                     <div class="hours">4:00 PM - 9:30 PM</div>
-                    <div class="service-type pickup-delivery" id="thursday-service">Pickup & Delivery</div>
+                    <div class="service-type delivery-only" id="thursday-service">Delivery Only</div>
                 </div>
             </div>
             
@@ -468,11 +468,11 @@
         
         <div class="action-buttons">
             <a href="https://www.instagram.com/tamalesmexicanosvan/" target="_blank" class="action-btn instagram-btn">
-                <div class="btn-icon instagram-icon"></div>
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.8.0/instagram.svg" style="width: 20px; height: 20px; filter: invert(1);" alt="Instagram">
                 <span id="follow-us">Follow Us</span>
             </a>
             <a href="https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9" target="_blank" class="action-btn directions-btn">
-                <div class="btn-icon directions-icon"></div>
+                <span style="font-size: 18px;">📍</span>
                 <span id="directions">Get Directions</span>
             </a>
         </div>
@@ -498,8 +498,15 @@
             },
             services: {
                 delivery: { en: 'Delivery Only', es: 'Solo Entrega' },
-                pickup: { en: 'Pickup & Delivery', es: 'Recoger y Entregar' },
+                pickup: { en: 'Pickup & Delivery', es: 'A Domicilio y Recoger' },
                 closed: { en: 'Closed', es: 'Cerrado' }
+            },
+            status: {
+                currentlyOpen: { en: 'Currently Open', es: 'Actualmente Abierto' },
+                currentlyClosed: { en: 'Currently Closed', es: 'Actualmente Cerrado' },
+                closesAt: { en: 'Closes at', es: 'Cierra a las' },
+                opensToday: { en: 'Opens today at', es: 'Abre hoy a las' },
+                nextOpen: { en: 'Next open:', es: 'Próxima apertura:' }
             },
             other: {
                 note: { en: 'Note:', es: 'Nota:' },
@@ -507,7 +514,6 @@
                 followUs: { en: 'Follow Us', es: 'Síguenos' },
                 directions: { en: 'Get Directions', es: 'Obtener Direcciones' },
                 reviewsHeader: { en: 'Google Reviews', es: 'Reseñas de Google' },
-                viewReviews: { en: 'View All Reviews on Google', es: 'Ver Todas las Reseñas en Google' },
                 closedHours: { en: 'CLOSED', es: 'CERRADO' }
             },
             reviews: {
@@ -523,13 +529,6 @@
                     en: '"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"',
                     es: '"Excelente servicio y comida increíble. Las opciones vegetarianas también son fantásticas. ¡Muy recomendable!"'
                 }
-            },
-            status: {
-                currentlyOpen: { en: 'Currently Open', es: 'Actualmente Abierto' },
-                currentlyClosed: { en: 'Currently Closed', es: 'Actualmente Cerrado' },
-                closesAt: { en: 'Closes at', es: 'Cierra a las' },
-                opensToday: { en: 'Opens today at', es: 'Abre hoy a las' },
-                nextOpen: { en: 'Next open:', es: 'Próxima apertura:' }
             }
         };
         
@@ -606,7 +605,7 @@
                 1: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' },
                 2: null,
                 3: null,
-                4: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' },
+                4: { start: 16 * 60, end: 21.5 * 60, service: 'delivery' },
                 5: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' },
                 6: { start: 9 * 60, end: 21.5 * 60, service: 'pickup' }
             };
@@ -615,19 +614,50 @@
             
             if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
                 isOpen = true;
-                const closeTime = Math.floor(todayHours.end / 60);
+                const closeHour = Math.floor(todayHours.end / 60);
                 const closeMinutes = todayHours.end % 60;
-                const closeTimeStr = closeMinutes === 30 ? `${closeTime}:30 PM` : `${closeTime}:00 PM`;
                 
-                const serviceText = translations.services[todayHours.service][lang];
-                statusText = `${translations.status.currentlyOpen[lang]} - ${serviceText}<br>${translations.status.closesAt[lang]} ${closeTimeStr}`;
+                // Convert to 12-hour format
+                let displayHour = closeHour;
+                const ampm = closeHour >= 12 ? 'PM' : 'AM';
+                if (closeHour > 12) {
+                    displayHour = closeHour - 12;
+                } else if (closeHour === 0) {
+                    displayHour = 12;
+                }
+                
+                const closeTimeStr = closeMinutes === 30 ? `${displayHour}:30 ${ampm}` : `${displayHour}:00 ${ampm}`;
+                
+                if (isSpanish) {
+                    const serviceText = todayHours.service === 'delivery' ? 'Solo Entrega' : 'A Domicilio y Recoger';
+                    statusText = `Actualmente Abierto - ${serviceText}<br>Cierra a las ${closeTimeStr}`;
+                } else {
+                    const serviceText = todayHours.service === 'delivery' ? 'Delivery Only' : 'Pickup & Delivery';
+                    statusText = `Currently Open - ${serviceText}<br>Closes at ${closeTimeStr}`;
+                }
             } else {
                 isOpen = false;
                 
                 if (todayHours && currentTime < todayHours.start) {
-                    const openTime = Math.floor(todayHours.start / 60);
-                    const openTimeStr = openTime === 9 ? '9:00 AM' : '4:00 PM';
-                    statusText = `${translations.status.currentlyClosed[lang]}<br>${translations.status.opensToday[lang]} ${openTimeStr}`;
+                    const openHour = Math.floor(todayHours.start / 60);
+                    const openMinutes = todayHours.start % 60;
+                    
+                    // Convert to 12-hour format
+                    let displayHour = openHour;
+                    const ampm = openHour >= 12 ? 'PM' : 'AM';
+                    if (openHour > 12) {
+                        displayHour = openHour - 12;
+                    } else if (openHour === 0) {
+                        displayHour = 12;
+                    }
+                    
+                    const openTimeStr = openMinutes === 0 ? `${displayHour}:00 ${ampm}` : `${displayHour}:${openMinutes.toString().padStart(2, '0')} ${ampm}`;
+                    
+                    if (isSpanish) {
+                        statusText = `Actualmente Cerrado<br>Abre hoy a las ${openTimeStr}`;
+                    } else {
+                        statusText = `Currently Closed<br>Opens today at ${openTimeStr}`;
+                    }
                 } else {
                     let nextDay = (currentDay + 1) % 7;
                     let daysAhead = 1;
@@ -638,13 +668,38 @@
                     }
                     
                     if (hours[nextDay]) {
-                        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                        const dayName = translations.days[dayNames[nextDay]][lang];
-                        const openTime = Math.floor(hours[nextDay].start / 60);
-                        const openTimeStr = openTime === 9 ? '9:00 AM' : '4:00 PM';
-                        statusText = `${translations.status.currentlyClosed[lang]}<br>${translations.status.nextOpen[lang]} ${dayName} ${openTimeStr}`;
+                        const dayNames = {
+                            0: { en: 'Sunday', es: 'Domingo' },
+                            1: { en: 'Monday', es: 'Lunes' },
+                            2: { en: 'Tuesday', es: 'Martes' },
+                            3: { en: 'Wednesday', es: 'Miércoles' },
+                            4: { en: 'Thursday', es: 'Jueves' },
+                            5: { en: 'Friday', es: 'Viernes' },
+                            6: { en: 'Saturday', es: 'Sábado' }
+                        };
+                        
+                        const dayName = isSpanish ? dayNames[nextDay].es : dayNames[nextDay].en;
+                        const openHour = Math.floor(hours[nextDay].start / 60);
+                        const openMinutes = hours[nextDay].start % 60;
+                        
+                        // Convert to 12-hour format
+                        let displayHour = openHour;
+                        const ampm = openHour >= 12 ? 'PM' : 'AM';
+                        if (openHour > 12) {
+                            displayHour = openHour - 12;
+                        } else if (openHour === 0) {
+                            displayHour = 12;
+                        }
+                        
+                        const openTimeStr = openMinutes === 0 ? `${displayHour}:00 ${ampm}` : `${displayHour}:${openMinutes.toString().padStart(2, '0')} ${ampm}`;
+                        
+                        if (isSpanish) {
+                            statusText = `Actualmente Cerrado<br>Próxima apertura: ${dayName} a las ${openTimeStr}`;
+                        } else {
+                            statusText = `Currently Closed<br>Next open: ${dayName} at ${openTimeStr}`;
+                        }
                     } else {
-                        statusText = translations.status.currentlyClosed[lang];
+                        statusText = isSpanish ? 'Actualmente Cerrado' : 'Currently Closed';
                     }
                 }
             }
