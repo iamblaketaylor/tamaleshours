@@ -177,7 +177,7 @@
         }
         
         .delivery-only {
-            background: linear-gradient(135deg, #d4462a, #8b2914);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             color: white;
         }
         
@@ -256,14 +256,6 @@
             background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTUuNSA4LjVMMjIgMTJMMTUuNSAxNS41TDEyIDIyTDguNSAxNS41TDIgMTJMOC41IDguNUwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
         }
         
-        .instagram-icon {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTQuNzQgMiAxNSAyIDEzIDJIMTJDMTAuNSAyIDkuNSAyIDkuNSAySDEyWk0xMiAyQzE0Ljc0IDIgMTUgMiAxNSAySDEyWk0xMiAyQzEwLjUgMiA5LjUgMiA5LjUgMkg5QzYuNzkgMiA1IDMuNzkgNSA2VjE4QzUgMjAuMjEgNi43OSAyMiA5IDIySDE1QzE3LjIxIDIyIDE5IDIwLjIxIDE5IDE4VjZDMTkgMy43OSAxNy4yMSAyIDE1IDJIMTJaTTEyIDcuNUMxNC4yMSA3LjUgMTYgOS4yOSAxNiAxMS41UzE0LjIxIDE1LjUgMTIgMTUuNVM4IDEzLjcxIDggMTEuNVM5Ljc5IDcuNSAxMiA3LjVaTTE2LjUgNi41QzE2LjUgNy4wNSAxNi4wNSA3LjUgMTUuNSA3LjVTMTQuNSA3LjA1IDE0LjUgNi41UzE0Ljk1IDYgMTUuNSA2UzE2LjUgNi40NSAxNi41IDYuNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=');
-        }
-        
-        .directions-icon {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0QzE0IDUuMSAxMy4xIDYgMTIgNkMxMC45IDYgMTAgNS4xIDEwIDRDMTAgMi45IDEwLjkgMiAxMiAyWk0yMSA5VjdMMTQuNSA2TDEzLjA5IDcuNEwxNCA5SDIxWk0xNSAxMEw2IDEyVjEwSDEzQzEzLjI2IDEwIDEzLjUgMTAuMDQgMTMuNzQgMTAuMUwxNSAxMFpNNSAyMkgxOVYyMEg1VjIyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
-        }
-        
         .reviews-section {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 248, 248, 0.9));
             border-radius: 15px;
@@ -315,26 +307,6 @@
             font-weight: 600;
             color: #2d3748;
             font-size: 12px;
-        }
-        
-        .view-all-reviews {
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        .view-all-btn {
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-        
-        .view-all-btn:hover {
-            transform: translateY(-1px);
         }
         
         .note {
@@ -468,11 +440,9 @@
         
         <div class="action-buttons">
             <a href="https://www.instagram.com/tamalesmexicanosvan/" target="_blank" class="action-btn instagram-btn">
-                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/11.8.0/instagram.svg" style="width: 20px; height: 20px; filter: invert(1);" alt="Instagram">
                 <span id="follow-us">Follow Us</span>
             </a>
             <a href="https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9" target="_blank" class="action-btn directions-btn">
-                <span style="font-size: 18px;">📍</span>
                 <span id="directions">Get Directions</span>
             </a>
         </div>
@@ -481,103 +451,51 @@
     <script>
         let isSpanish = false;
         
-        // Translation object
-        const translations = {
-            title: {
-                en: 'Business Hours',
-                es: 'Horarios de Atención'
-            },
-            days: {
-                monday: { en: 'Monday', es: 'Lunes' },
-                tuesday: { en: 'Tuesday', es: 'Martes' },
-                wednesday: { en: 'Wednesday', es: 'Miércoles' },
-                thursday: { en: 'Thursday', es: 'Jueves' },
-                friday: { en: 'Friday', es: 'Viernes' },
-                saturday: { en: 'Saturday', es: 'Sábado' },
-                sunday: { en: 'Sunday', es: 'Domingo' }
-            },
-            services: {
-                delivery: { en: 'Delivery Only', es: 'Solo Entrega' },
-                pickup: { en: 'Pickup & Delivery', es: 'A Domicilio y Recoger' },
-                closed: { en: 'Closed', es: 'Cerrado' }
-            },
-            status: {
-                currentlyOpen: { en: 'Currently Open', es: 'Actualmente Abierto' },
-                currentlyClosed: { en: 'Currently Closed', es: 'Actualmente Cerrado' },
-                closesAt: { en: 'Closes at', es: 'Cierra a las' },
-                opensToday: { en: 'Opens today at', es: 'Abre hoy a las' },
-                nextOpen: { en: 'Next open:', es: 'Próxima apertura:' }
-            },
-            other: {
-                note: { en: 'Note:', es: 'Nota:' },
-                noteText: { en: 'Service availability varies by day. Check the colored labels above for pickup vs delivery options.', es: 'La disponibilidad del servicio varía según el día. Consulte las etiquetas de colores para las opciones de recoger o entrega.' },
-                followUs: { en: 'Follow Us', es: 'Síguenos' },
-                directions: { en: 'Get Directions', es: 'Obtener Direcciones' },
-                reviewsHeader: { en: 'Google Reviews', es: 'Reseñas de Google' },
-                closedHours: { en: 'CLOSED', es: 'CERRADO' }
-            },
-            reviews: {
-                review1: {
-                    en: '"Absolutely delicious tamales! The masa is perfectly steamed and the filling is so flavorful. Best Mexican food in Port Coquitlam!"',
-                    es: '"¡Tamales absolutamente deliciosos! La masa está perfectamente cocida al vapor y el relleno es muy sabroso. ¡La mejor comida mexicana en Port Coquitlam!"'
-                },
-                review2: {
-                    en: '"Fast delivery and authentic taste. The chicken tamales remind me of my grandmother\'s cooking. Will definitely order again!"',
-                    es: '"Entrega rápida y sabor auténtico. Los tamales de pollo me recuerdan a la cocina de mi abuela. ¡Definitivamente volveré a ordenar!"'
-                },
-                review3: {
-                    en: '"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"',
-                    es: '"Excelente servicio y comida increíble. Las opciones vegetarianas también son fantásticas. ¡Muy recomendable!"'
-                }
-            }
-        };
-        
         function switchLanguage() {
             isSpanish = !isSpanish;
-            const lang = isSpanish ? 'es' : 'en';
             
             // Update language button
             const langBtn = document.querySelector('.language-toggle');
             langBtn.textContent = isSpanish ? '🇺🇸 English' : '🇲🇽 Español';
             
             // Update title
-            document.getElementById('title').textContent = translations.title[lang];
+            document.getElementById('title').textContent = isSpanish ? 'Horarios de Atención' : 'Business Hours';
             
             // Update days
-            Object.keys(translations.days).forEach(day => {
-                const element = document.getElementById(day);
-                if (element) {
-                    element.textContent = translations.days[day][lang];
-                }
-            });
+            document.getElementById('monday').textContent = isSpanish ? 'Lunes' : 'Monday';
+            document.getElementById('tuesday').textContent = isSpanish ? 'Martes' : 'Tuesday';
+            document.getElementById('wednesday').textContent = isSpanish ? 'Miércoles' : 'Wednesday';
+            document.getElementById('thursday').textContent = isSpanish ? 'Jueves' : 'Thursday';
+            document.getElementById('friday').textContent = isSpanish ? 'Viernes' : 'Friday';
+            document.getElementById('saturday').textContent = isSpanish ? 'Sábado' : 'Saturday';
+            document.getElementById('sunday').textContent = isSpanish ? 'Domingo' : 'Sunday';
             
             // Update services
-            document.getElementById('monday-service').textContent = translations.services.delivery[lang];
-            document.getElementById('tuesday-service').textContent = translations.services.closed[lang];
-            document.getElementById('wednesday-service').textContent = translations.services.closed[lang];
-            document.getElementById('thursday-service').textContent = translations.services.pickup[lang];
-            document.getElementById('friday-service').textContent = translations.services.pickup[lang];
-            document.getElementById('saturday-service').textContent = translations.services.pickup[lang];
-            document.getElementById('sunday-service').textContent = translations.services.delivery[lang];
+            document.getElementById('monday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
+            document.getElementById('tuesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
+            document.getElementById('wednesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
+            document.getElementById('thursday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
+            document.getElementById('friday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
+            document.getElementById('saturday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
+            document.getElementById('sunday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
             
             // Update closed hours text
-            document.getElementById('tuesday-hours').textContent = translations.other.closedHours[lang];
-            document.getElementById('wednesday-hours').textContent = translations.other.closedHours[lang];
+            document.getElementById('tuesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
+            document.getElementById('wednesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             
             // Update other text
-            document.getElementById('note-label').textContent = translations.other.note[lang];
-            document.getElementById('note-text').textContent = translations.other.noteText[lang];
-            document.getElementById('follow-us').textContent = translations.other.followUs[lang];
-            document.getElementById('directions').textContent = translations.other.directions[lang];
-            document.getElementById('reviews-header').textContent = translations.other.reviewsHeader[lang];
-            document.getElementById('view-reviews').textContent = translations.other.viewReviews[lang];
+            document.getElementById('note-label').textContent = isSpanish ? 'Nota:' : 'Note:';
+            document.getElementById('note-text').textContent = isSpanish ? 'La disponibilidad del servicio varía según el día. Consulte las etiquetas de colores para las opciones de recoger o entrega.' : 'Service availability varies by day. Check the colored labels above for pickup vs delivery options.';
+            document.getElementById('follow-us').textContent = isSpanish ? 'Síguenos' : 'Follow Us';
+            document.getElementById('directions').textContent = isSpanish ? 'Obtener Direcciones' : 'Get Directions';
+            document.getElementById('reviews-header').textContent = isSpanish ? 'Reseñas de Google' : 'Google Reviews';
             
             // Update reviews
-            document.getElementById('review1').textContent = translations.reviews.review1[lang];
-            document.getElementById('review2').textContent = translations.reviews.review2[lang];
-            document.getElementById('review3').textContent = translations.reviews.review3[lang];
+            document.getElementById('review1').textContent = isSpanish ? '"¡Tamales absolutamente deliciosos! La masa está perfectamente cocida al vapor y el relleno es muy sabroso. ¡La mejor comida mexicana en Port Coquitlam!"' : '"Absolutely delicious tamales! The masa is perfectly steamed and the filling is so flavorful. Best Mexican food in Port Coquitlam!"';
+            document.getElementById('review2').textContent = isSpanish ? '"Entrega rápida y sabor auténtico. Los tamales de pollo me recuerdan a la cocina de mi abuela. ¡Definitivamente volveré a ordenar!"' : '"Fast delivery and authentic taste. The chicken tamales remind me of my grandmother\'s cooking. Will definitely order again!"';
+            document.getElementById('review3').textContent = isSpanish ? '"Excelente servicio y comida increíble. Las opciones vegetarianas también son fantásticas. ¡Muy recomendable!"' : '"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"';
             
-            // Update status
+            // Update current status if it exists
             updateCurrentStatus();
         }
         
@@ -595,135 +513,100 @@
             });
             
             const statusDiv = document.getElementById('current-status');
-            const lang = isSpanish ? 'es' : 'en';
             let isOpen = false;
             let statusText = '';
             
             // Define business hours
             const hours = {
-                0: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' },
-                1: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' },
-                2: null,
-                3: null,
-                4: { start: 16 * 60, end: 21.5 * 60, service: 'delivery' },
-                5: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' },
-                6: { start: 9 * 60, end: 21.5 * 60, service: 'pickup' }
+                0: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' }, // Sunday
+                1: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' }, // Monday
+                2: null, // Tuesday - closed
+                3: null, // Wednesday - closed
+                4: { start: 16 * 60, end: 21.5 * 60, service: 'delivery' }, // Thursday
+                5: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' }, // Friday
+                6: { start: 9 * 60, end: 21.5 * 60, service: 'pickup' } // Saturday
             };
             
             const todayHours = hours[currentDay];
             
             if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
                 isOpen = true;
-                const closeHour = Math.floor(todayHours.end / 60);
-                const closeMinutes = todayHours.end % 60;
-                
-                // Convert to 12-hour format
-                let displayHour = closeHour;
-                const ampm = closeHour >= 12 ? 'PM' : 'AM';
-                if (closeHour > 12) {
-                    displayHour = closeHour - 12;
-                } else if (closeHour === 0) {
-                    displayHour = 12;
-                }
-                
-                const closeTimeStr = closeMinutes === 30 ? `${displayHour}:30 ${ampm}` : `${displayHour}:00 ${ampm}`;
-                
                 if (isSpanish) {
-                    const serviceText = todayHours.service === 'delivery' ? 'Solo Entrega' : 'A Domicilio y Recoger';
-                    statusText = `Actualmente Abierto - ${serviceText}<br>Cierra a las ${closeTimeStr}`;
+                    statusText = todayHours.service === 'pickup' ? 
+                        '🟢 ABIERTO - A Domicilio y Recoger' : 
+                        '🟢 ABIERTO - Solo Entrega';
                 } else {
-                    const serviceText = todayHours.service === 'delivery' ? 'Delivery Only' : 'Pickup & Delivery';
-                    statusText = `Currently Open - ${serviceText}<br>Closes at ${closeTimeStr}`;
+                    statusText = todayHours.service === 'pickup' ? 
+                        '🟢 OPEN NOW - Pickup & Delivery' : 
+                        '🟢 OPEN NOW - Delivery Only';
                 }
             } else {
                 isOpen = false;
-                
-                if (todayHours && currentTime < todayHours.start) {
-                    const openHour = Math.floor(todayHours.start / 60);
-                    const openMinutes = todayHours.start % 60;
+                if (todayHours) {
+                    // Calculate time until opening or closing
+                    let nextTime;
+                    let nextAction;
                     
-                    // Convert to 12-hour format
-                    let displayHour = openHour;
-                    const ampm = openHour >= 12 ? 'PM' : 'AM';
-                    if (openHour > 12) {
-                        displayHour = openHour - 12;
-                    } else if (openHour === 0) {
-                        displayHour = 12;
+                    if (currentTime < todayHours.start) {
+                        // Before opening
+                        nextTime = todayHours.start - currentTime;
+                        nextAction = isSpanish ? 'Abre' : 'Opens';
+                    } else {
+                        // After closing - find next opening day
+                        let nextDay = (currentDay + 1) % 7;
+                        while (nextDay !== currentDay && !hours[nextDay]) {
+                            nextDay = (nextDay + 1) % 7;
+                        }
+                        
+                        if (hours[nextDay]) {
+                            const dayNames = isSpanish ? 
+                                ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
+                                ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                            
+                            statusText = isSpanish ? 
+                                `🔴 CERRADO - Abre ${dayNames[nextDay]}` :
+                                `🔴 CLOSED - Opens ${dayNames[nextDay]}`;
+                        }
                     }
                     
-                    const openTimeStr = openMinutes === 0 ? `${displayHour}:00 ${ampm}` : `${displayHour}:${openMinutes.toString().padStart(2, '0')} ${ampm}`;
-                    
-                    if (isSpanish) {
-                        statusText = `Actualmente Cerrado<br>Abre hoy a las ${openTimeStr}`;
-                    } else {
-                        statusText = `Currently Closed<br>Opens today at ${openTimeStr}`;
+                    if (nextTime && nextAction) {
+                        const hours = Math.floor(nextTime / 60);
+                        const minutes = nextTime % 60;
+                        const timeString = hours > 0 ? 
+                            (isSpanish ? `${hours}h ${minutes}m` : `${hours}h ${minutes}m`) :
+                            (isSpanish ? `${minutes} minutos` : `${minutes} minutes`);
+                        
+                        statusText = isSpanish ? 
+                            `🔴 CERRADO - ${nextAction} en ${timeString}` :
+                            `🔴 CLOSED - ${nextAction} in ${timeString}`;
                     }
                 } else {
+                    // Closed today - find next opening day
                     let nextDay = (currentDay + 1) % 7;
-                    let daysAhead = 1;
-                    
-                    while (!hours[nextDay] && daysAhead < 7) {
+                    while (nextDay !== currentDay && !hours[nextDay]) {
                         nextDay = (nextDay + 1) % 7;
-                        daysAhead++;
                     }
                     
                     if (hours[nextDay]) {
-                        const dayNames = {
-                            0: { en: 'Sunday', es: 'Domingo' },
-                            1: { en: 'Monday', es: 'Lunes' },
-                            2: { en: 'Tuesday', es: 'Martes' },
-                            3: { en: 'Wednesday', es: 'Miércoles' },
-                            4: { en: 'Thursday', es: 'Jueves' },
-                            5: { en: 'Friday', es: 'Viernes' },
-                            6: { en: 'Saturday', es: 'Sábado' }
-                        };
+                        const dayNames = isSpanish ? 
+                            ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
+                            ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                         
-                        const dayName = isSpanish ? dayNames[nextDay].es : dayNames[nextDay].en;
-                        const openHour = Math.floor(hours[nextDay].start / 60);
-                        const openMinutes = hours[nextDay].start % 60;
-                        
-                        // Convert to 12-hour format
-                        let displayHour = openHour;
-                        const ampm = openHour >= 12 ? 'PM' : 'AM';
-                        if (openHour > 12) {
-                            displayHour = openHour - 12;
-                        } else if (openHour === 0) {
-                            displayHour = 12;
-                        }
-                        
-                        const openTimeStr = openMinutes === 0 ? `${displayHour}:00 ${ampm}` : `${displayHour}:${openMinutes.toString().padStart(2, '0')} ${ampm}`;
-                        
-                        if (isSpanish) {
-                            statusText = `Actualmente Cerrado<br>Próxima apertura: ${dayName} a las ${openTimeStr}`;
-                        } else {
-                            statusText = `Currently Closed<br>Next open: ${dayName} at ${openTimeStr}`;
-                        }
-                    } else {
-                        statusText = isSpanish ? 'Actualmente Cerrado' : 'Currently Closed';
+                        statusText = isSpanish ? 
+                            `🔴 CERRADO HOY - Abre ${dayNames[nextDay]}` :
+                            `🔴 CLOSED TODAY - Opens ${dayNames[nextDay]}`;
                     }
                 }
             }
             
-            statusDiv.innerHTML = statusText;
-            statusDiv.className = `current-status ${isOpen ? 'open' : 'closed'}`;
+            statusDiv.textContent = statusText;
+            statusDiv.className = 'current-status ' + (isOpen ? 'open' : 'closed');
         }
         
-        // Other functions
-        function openDoorDash() {
-            window.open('https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv', '_blank');
-        }
-        
-        function openUberEats() {
-            window.open('https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1', '_blank');
-        }
-        
-        function getDirections() {
-            window.open('https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9', '_blank');
-        }
-        
-        // Initialize
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentStatus();
+            // Update every minute
             setInterval(updateCurrentStatus, 60000);
         });
     </script>
