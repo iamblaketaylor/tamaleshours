@@ -341,6 +341,17 @@
         
         <div id="current-status" class="current-status"></div>
         
+        <div class="order-buttons">
+            <a href="https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv" target="_blank" class="order-btn skip-btn">
+                <div class="btn-icon skip-icon"></div>
+                DoorDash
+            </a>
+            <a href="https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1" target="_blank" class="order-btn uber-btn">
+                <div class="btn-icon uber-icon"></div>
+                Uber Eats
+            </a>
+        </div>
+        
         <div class="schedule">
             <div class="day-row" data-day="1">
                 <div class="day-name" id="monday">Monday</div>
@@ -403,17 +414,6 @@
             <strong id="note-label">Note:</strong> <span id="note-text">Service availability varies by day. Check the colored labels above for pickup vs delivery options.</span>
         </div>
         
-        <div class="order-buttons">
-            <a href="https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv" target="_blank" class="order-btn skip-btn">
-                <div class="btn-icon skip-icon"></div>
-                DoorDash
-            </a>
-            <a href="https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1" target="_blank" class="order-btn uber-btn">
-                <div class="btn-icon uber-icon"></div>
-                Uber Eats
-            </a>
-        </div>
-        
         <div class="reviews-section">
             <div class="reviews-header">
                 <div class="google-logo"></div>
@@ -471,13 +471,13 @@
             document.getElementById('sunday').textContent = isSpanish ? 'Domingo' : 'Sunday';
             
             // Update services
-            document.getElementById('monday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
+            document.getElementById('monday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
             document.getElementById('tuesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('wednesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('thursday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
+            document.getElementById('thursday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
             document.getElementById('friday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
             document.getElementById('saturday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
-            document.getElementById('sunday-service').textContent = isSpanish ? 'Solo Entrega' : 'Delivery Only';
+            document.getElementById('sunday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
             
             // Update closed hours text
             document.getElementById('tuesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
@@ -534,7 +534,7 @@
                 if (isSpanish) {
                     statusText = todayHours.service === 'pickup' ? 
                         '🟢 ABIERTO - A Domicilio y Recoger' : 
-                        '🟢 ABIERTO - Solo Entrega';
+                        '🟢 ABIERTO - A Domicilio';
                 } else {
                     statusText = todayHours.service === 'pickup' ? 
                         '🟢 OPEN NOW - Pickup & Delivery' : 
