@@ -356,8 +356,8 @@
             <div class="day-row" data-day="1">
                 <div class="day-name" id="monday">Monday</div>
                 <div class="hours-info">
-                    <div class="hours">9:00 AM - 9:30 PM</div>
-                    <div class="service-type delivery-only" id="monday-service">Delivery Only</div>
+                    <div class="hours" id="monday-hours">CLOSED</div>
+                    <div class="service-type closed-day" id="monday-service">Closed</div>
                 </div>
             </div>
             
@@ -380,15 +380,15 @@
             <div class="day-row" data-day="4">
                 <div class="day-name" id="thursday">Thursday</div>
                 <div class="hours-info">
-                    <div class="hours">4:00 PM - 9:30 PM</div>
-                    <div class="service-type delivery-only" id="thursday-service">Delivery Only</div>
+                    <div class="hours" id="thursday-hours">CLOSED</div>
+                    <div class="service-type closed-day" id="thursday-service">Closed</div>
                 </div>
             </div>
             
             <div class="day-row" data-day="5">
                 <div class="day-name" id="friday">Friday</div>
                 <div class="hours-info">
-                    <div class="hours">4:00 PM - 9:30 PM</div>
+                    <div class="hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="friday-service">Pickup & Delivery</div>
                 </div>
             </div>
@@ -396,7 +396,7 @@
             <div class="day-row" data-day="6">
                 <div class="day-name" id="saturday">Saturday</div>
                 <div class="hours-info">
-                    <div class="hours">9:00 AM - 9:30 PM</div>
+                    <div class="hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="saturday-service">Pickup & Delivery</div>
                 </div>
             </div>
@@ -404,8 +404,8 @@
             <div class="day-row" data-day="0">
                 <div class="day-name" id="sunday">Sunday</div>
                 <div class="hours-info">
-                    <div class="hours">9:00 AM - 9:30 PM</div>
-                    <div class="service-type delivery-only" id="sunday-service">Delivery Only</div>
+                    <div class="hours">4:00 PM - 9:00 PM</div>
+                    <div class="service-type pickup-delivery" id="sunday-service">Pickup & Delivery</div>
                 </div>
             </div>
         </div>
@@ -442,7 +442,7 @@
             <a href="https://www.instagram.com/tamalesmexicanosvan/" target="_blank" class="action-btn instagram-btn">
                 <span id="follow-us">Follow Us</span>
             </a>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=950+Seaborne+Ave,+Port+Coquitlam,+BC+V3B+0R9" target="_blank" class="action-btn directions-btn">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=950%20Seaborne%20Ave%20%231120%2C%20Port%20Coquitlam%2C%20BC%20V3B%200R9" target="_blank" class="action-btn directions-btn">
                 <span id="directions">Get Directions</span>
             </a>
         </div>
@@ -471,17 +471,19 @@
             document.getElementById('sunday').textContent = isSpanish ? 'Domingo' : 'Sunday';
             
             // Update services
-            document.getElementById('monday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
+            document.getElementById('monday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('tuesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('wednesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('thursday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
+            document.getElementById('thursday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('friday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
             document.getElementById('saturday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
-            document.getElementById('sunday-service').textContent = isSpanish ? 'A Domicilio' : 'Delivery Only';
+            document.getElementById('sunday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
             
             // Update closed hours text
+            document.getElementById('monday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             document.getElementById('tuesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             document.getElementById('wednesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
+            document.getElementById('thursday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             
             // Update other text
             document.getElementById('note-label').textContent = isSpanish ? 'Nota:' : 'Note:';
@@ -518,13 +520,13 @@
             
             // Define business hours
             const hours = {
-                0: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' }, // Sunday
-                1: { start: 9 * 60, end: 21.5 * 60, service: 'delivery' }, // Monday
+                0: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Sunday - pickup & delivery
+                1: null, // Monday - closed
                 2: null, // Tuesday - closed
                 3: null, // Wednesday - closed
-                4: { start: 16 * 60, end: 21.5 * 60, service: 'delivery' }, // Thursday
-                5: { start: 16 * 60, end: 21.5 * 60, service: 'pickup' }, // Friday
-                6: { start: 9 * 60, end: 21.5 * 60, service: 'pickup' } // Saturday
+                4: null, // Thursday - closed
+                5: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Friday
+                6: { start: 16 * 60, end: 21 * 60, service: 'pickup' } // Saturday
             };
             
             const todayHours = hours[currentDay];
