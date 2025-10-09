@@ -342,11 +342,11 @@
         <div id="current-status" class="current-status"></div>
         
         <div class="order-buttons">
-            <a href="https://www.doordash.com/en-CA/store/tamales-mexicanos-port-coquitlam-27646697/32376153/?srsltid=AfmBOoq0Us9o2LfbsvRynUShbkUiqZ-e2VFmTjQILjZFz2sXGTdHbJVv" target="_blank" class="order-btn skip-btn">
+            <a href="https://order.online/business/tamales-mexicanos-12657661" target="_blank" class="order-btn skip-btn">
                 <div class="btn-icon skip-icon"></div>
                 DoorDash
             </a>
-            <a href="https://www.ubereats.com/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA?diningMode=DELIVERY&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMjI1JTIwUmljaG1vbmQlMjBTdCUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMjFlNjQ4ZjkyLTAxNGMtNDI5My0yYzY0LWYyMjUwMWQ1Zjc5OCUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJ1YmVyX3BsYWNlcyUyMiUyQyUyMmxhdGl0dWRlJTIyJTNBNDkuMjE1OTU4JTJDJTIybG9uZ2l0dWRlJTIyJTNBLTEyMi44OTUxMDklN0Q%3D&ps=1" target="_blank" class="order-btn uber-btn">
+            <a href="https://www.order.store/ca/store/tamales-mexicanos/vPsFnTfERGmwS-Yk1FetQA" target="_blank" class="order-btn uber-btn">
                 <div class="btn-icon uber-icon"></div>
                 Uber Eats
             </a>
@@ -356,8 +356,8 @@
             <div class="day-row" data-day="1">
                 <div class="day-name" id="monday">Monday</div>
                 <div class="hours-info">
-                    <div class="hours" id="monday-hours">CLOSED</div>
-                    <div class="service-type closed-day" id="monday-service">Closed</div>
+                    <div class="hours">4:00 PM - 9:00 PM</div>
+                    <div class="service-type pickup-delivery" id="monday-service">Pickup & Delivery</div>
                 </div>
             </div>
             
@@ -471,7 +471,7 @@
             document.getElementById('sunday').textContent = isSpanish ? 'Domingo' : 'Sunday';
             
             // Update services
-            document.getElementById('monday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
+            document.getElementById('monday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
             document.getElementById('tuesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('wednesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
             document.getElementById('thursday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
@@ -480,7 +480,6 @@
             document.getElementById('sunday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
             
             // Update closed hours text
-            document.getElementById('monday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             document.getElementById('tuesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             document.getElementById('wednesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
             document.getElementById('thursday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
@@ -521,7 +520,7 @@
             // Define business hours
             const hours = {
                 0: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Sunday - pickup & delivery
-                1: null, // Monday - closed
+                1: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Monday - pickup & delivery
                 2: null, // Tuesday - closed
                 3: null, // Wednesday - closed
                 4: null, // Thursday - closed
