@@ -237,30 +237,42 @@
             margin-top: 0;
         }
 
-        .service-badges {
+        .split-hours {
+            text-align: right;
+        }
+
+        .split-hours-row {
             display: flex;
-            gap: 6px;
             justify-content: flex-end;
-            flex-wrap: wrap;
-            margin-top: 4px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
         }
 
-        .service-badge {
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 500;
-            white-space: nowrap;
+        .split-hours-row:last-child {
+            margin-bottom: 0;
         }
 
-        .service-badge.delivery {
+        .split-hours-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+
+        .split-hours-label.delivery {
             background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: white;
         }
 
-        .service-badge.pickup {
+        .split-hours-label.pickup {
             background: linear-gradient(135deg, #228b22, #006400);
-            color: white;
+        }
+
+        .split-hours-time {
+            font-weight: 500;
+            font-size: 14px;
+            color: #4a5568;
         }
         
         .order-buttons, .action-buttons {
@@ -605,42 +617,49 @@
                 // Get or create breakdown element
                 let breakdownEl = document.getElementById(`${day}-breakdown`);
 
-                // Get or create badges container
-                let badgesEl = document.getElementById(`${day}-badges`);
+                // Get or create split hours container
+                let splitHoursEl = document.getElementById(`${day}-split-hours`);
 
                 if (dayData.open) {
                     // Check if early delivery is enabled
                     if (dayData.earlyDelivery && dayData.deliveryStart) {
-                        // Show pickup hours only (main business hours)
-                        hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
+                        // Hide regular hours and service elements
+                        hoursEl.style.display = 'none';
                         serviceEl.style.display = 'none';
 
-                        // Create or update badges container
-                        if (!badgesEl) {
-                            badgesEl = document.createElement('div');
-                            badgesEl.id = `${day}-badges`;
-                            badgesEl.className = 'service-badges';
-                            serviceEl.parentNode.appendChild(badgesEl);
+                        // Create or update split hours container
+                        if (!splitHoursEl) {
+                            splitHoursEl = document.createElement('div');
+                            splitHoursEl.id = `${day}-split-hours`;
+                            splitHoursEl.className = 'split-hours';
+                            serviceEl.parentNode.appendChild(splitHoursEl);
                         }
 
                         const deliveryLabel = isSpanish ? 'Domicilio' : 'Delivery';
                         const pickupLabel = isSpanish ? 'Recoger' : 'Pickup';
 
-                        badgesEl.innerHTML = `
-                            <span class="service-badge delivery">🚗 ${deliveryLabel} ${formatTime(dayData.deliveryStart)}</span>
-                            <span class="service-badge pickup">📦 ${pickupLabel} ${formatTime(dayData.start)}</span>
+                        splitHoursEl.innerHTML = `
+                            <div class="split-hours-row">
+                                <span class="split-hours-label delivery">🚗 ${deliveryLabel}</span>
+                                <span class="split-hours-time">${formatTime(dayData.deliveryStart)} - ${formatTime(dayData.end)}</span>
+                            </div>
+                            <div class="split-hours-row">
+                                <span class="split-hours-label pickup">📦 ${pickupLabel}</span>
+                                <span class="split-hours-time">${formatTime(dayData.start)} - ${formatTime(dayData.end)}</span>
+                            </div>
                         `;
-                        badgesEl.style.display = 'flex';
+                        splitHoursEl.style.display = 'block';
                     } else {
                         // Regular single hours display
                         hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
+                        hoursEl.style.display = 'block';
                         serviceEl.textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
                         serviceEl.className = 'service-type pickup-delivery';
                         serviceEl.style.display = 'inline-block';
 
-                        // Hide badges if they exist
-                        if (badgesEl) {
-                            badgesEl.style.display = 'none';
+                        // Hide split hours if it exists
+                        if (splitHoursEl) {
+                            splitHoursEl.style.display = 'none';
                         }
                     }
 
@@ -650,13 +669,14 @@
                     }
                 } else {
                     hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
+                    hoursEl.style.display = 'block';
                     serviceEl.textContent = isSpanish ? 'Cerrado' : 'Closed';
                     serviceEl.className = 'service-type closed-day';
                     serviceEl.style.display = 'inline-block';
 
-                    // Hide badges and breakdown if they exist
-                    if (badgesEl) {
-                        badgesEl.style.display = 'none';
+                    // Hide split hours and breakdown if they exist
+                    if (splitHoursEl) {
+                        splitHoursEl.style.display = 'none';
                     }
                     if (breakdownEl) {
                         breakdownEl.style.display = 'none';
