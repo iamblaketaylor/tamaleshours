@@ -259,6 +259,61 @@
         .back-link:hover {
             color: #006400;
         }
+
+        .holiday-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        .holiday-toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .holiday-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .holiday-label {
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .holiday-select {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .holiday-select select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2d3748;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .holiday-select select:focus {
+            outline: none;
+            border-color: #d4462a;
+        }
+
+        .holiday-select.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .toggle input:checked + .toggle-slider.holiday {
+            background: linear-gradient(135deg, #d4462a, #8b2914);
+        }
     </style>
 </head>
 <body>
@@ -297,6 +352,37 @@
                         </select>
                     </div>
                 </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="monday-holiday" onchange="toggleHoliday('monday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="monday-holiday-select">
+                            <select id="monday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="day-editor" data-day="2">
@@ -325,6 +411,37 @@
                             <option value="pickup">Pickup & Delivery</option>
                             <option value="delivery">Delivery Only</option>
                         </select>
+                    </div>
+                </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="tuesday-holiday" onchange="toggleHoliday('tuesday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="tuesday-holiday-select">
+                            <select id="tuesday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -357,6 +474,37 @@
                         </select>
                     </div>
                 </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="wednesday-holiday" onchange="toggleHoliday('wednesday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="wednesday-holiday-select">
+                            <select id="wednesday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="day-editor" data-day="4">
@@ -385,6 +533,37 @@
                             <option value="pickup">Pickup & Delivery</option>
                             <option value="delivery">Delivery Only</option>
                         </select>
+                    </div>
+                </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="thursday-holiday" onchange="toggleHoliday('thursday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="thursday-holiday-select">
+                            <select id="thursday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -417,6 +596,37 @@
                         </select>
                     </div>
                 </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="friday-holiday" onchange="toggleHoliday('friday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="friday-holiday-select">
+                            <select id="friday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="day-editor" data-day="6">
@@ -445,6 +655,37 @@
                             <option value="pickup">Pickup & Delivery</option>
                             <option value="delivery">Delivery Only</option>
                         </select>
+                    </div>
+                </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="saturday-holiday" onchange="toggleHoliday('saturday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="saturday-holiday-select">
+                            <select id="saturday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -477,6 +718,37 @@
                         </select>
                     </div>
                 </div>
+                <div class="holiday-section">
+                    <div class="holiday-toggle-row">
+                        <div class="holiday-toggle-container">
+                            <span class="holiday-label">Holiday</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="sunday-holiday" onchange="toggleHoliday('sunday')">
+                                <span class="toggle-slider holiday"></span>
+                            </label>
+                        </div>
+                        <div class="holiday-select disabled" id="sunday-holiday-select">
+                            <select id="sunday-holiday-name">
+                                <option value="">Select Holiday...</option>
+                                <option value="new-years-day">New Year's Day</option>
+                                <option value="family-day">Family Day</option>
+                                <option value="good-friday">Good Friday</option>
+                                <option value="easter-sunday">Easter Sunday</option>
+                                <option value="easter-monday">Easter Monday</option>
+                                <option value="victoria-day">Victoria Day</option>
+                                <option value="canada-day">Canada Day</option>
+                                <option value="bc-day">BC Day</option>
+                                <option value="labour-day">Labour Day</option>
+                                <option value="thanksgiving">Thanksgiving</option>
+                                <option value="remembrance-day">Remembrance Day</option>
+                                <option value="christmas-eve">Christmas Eve</option>
+                                <option value="christmas-day">Christmas Day</option>
+                                <option value="boxing-day">Boxing Day</option>
+                                <option value="new-years-eve">New Year's Eve</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="btn-container">
@@ -493,13 +765,13 @@
         const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
         const defaultHours = {
-            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
-            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
-            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup' }
+            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' }
         };
 
         function toggleDay(day) {
@@ -510,6 +782,18 @@
                 inputs.classList.remove('disabled');
             } else {
                 inputs.classList.add('disabled');
+            }
+        }
+
+        function toggleHoliday(day) {
+            const isHoliday = document.getElementById(`${day}-holiday`).checked;
+            const holidaySelect = document.getElementById(`${day}-holiday-select`);
+
+            if (isHoliday) {
+                holidaySelect.classList.remove('disabled');
+            } else {
+                holidaySelect.classList.add('disabled');
+                document.getElementById(`${day}-holiday-name`).value = '';
             }
         }
 
@@ -525,7 +809,14 @@
                 document.getElementById(`${day}-end`).value = dayData.end;
                 document.getElementById(`${day}-service`).value = dayData.service;
 
+                // Load holiday data
+                const hasHoliday = dayData.holiday || false;
+                const holidayName = dayData.holidayName || '';
+                document.getElementById(`${day}-holiday`).checked = hasHoliday;
+                document.getElementById(`${day}-holiday-name`).value = holidayName;
+
                 toggleDay(day);
+                toggleHoliday(day);
             });
         }
 
@@ -537,7 +828,9 @@
                     open: document.getElementById(`${day}-open`).checked,
                     start: document.getElementById(`${day}-start`).value,
                     end: document.getElementById(`${day}-end`).value,
-                    service: document.getElementById(`${day}-service`).value
+                    service: document.getElementById(`${day}-service`).value,
+                    holiday: document.getElementById(`${day}-holiday`).checked,
+                    holidayName: document.getElementById(`${day}-holiday-name`).value
                 };
             });
 

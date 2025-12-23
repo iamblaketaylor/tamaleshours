@@ -190,6 +190,30 @@
             background: linear-gradient(135deg, #a0aec0, #718096);
             color: white;
         }
+
+        .holiday-badge {
+            background: linear-gradient(135deg, #d4462a, #8b2914);
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 8px;
+            animation: holidayPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes holidayPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .day-name-wrapper {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
         
         .order-buttons, .action-buttons {
             display: flex;
@@ -354,7 +378,10 @@
         
         <div class="schedule">
             <div class="day-row" data-day="1">
-                <div class="day-name" id="monday">Monday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="monday">Monday</span>
+                    <span class="holiday-badge" id="monday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="monday-hours">CLOSED</div>
                     <div class="service-type closed-day" id="monday-service">Closed</div>
@@ -362,7 +389,10 @@
             </div>
             
             <div class="day-row" data-day="2">
-                <div class="day-name" id="tuesday">Tuesday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="tuesday">Tuesday</span>
+                    <span class="holiday-badge" id="tuesday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="tuesday-hours">CLOSED</div>
                     <div class="service-type closed-day" id="tuesday-service">Closed</div>
@@ -370,7 +400,10 @@
             </div>
             
             <div class="day-row" data-day="3">
-                <div class="day-name" id="wednesday">Wednesday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="wednesday">Wednesday</span>
+                    <span class="holiday-badge" id="wednesday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="wednesday-hours">CLOSED</div>
                     <div class="service-type closed-day" id="wednesday-service">Closed</div>
@@ -378,7 +411,10 @@
             </div>
             
             <div class="day-row" data-day="4">
-                <div class="day-name" id="thursday">Thursday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="thursday">Thursday</span>
+                    <span class="holiday-badge" id="thursday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="thursday-hours">CLOSED</div>
                     <div class="service-type closed-day" id="thursday-service">Closed</div>
@@ -386,7 +422,10 @@
             </div>
             
             <div class="day-row" data-day="5">
-                <div class="day-name" id="friday">Friday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="friday">Friday</span>
+                    <span class="holiday-badge" id="friday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="friday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="friday-service">Pickup & Delivery</div>
@@ -394,7 +433,10 @@
             </div>
 
             <div class="day-row" data-day="6">
-                <div class="day-name" id="saturday">Saturday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="saturday">Saturday</span>
+                    <span class="holiday-badge" id="saturday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="saturday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="saturday-service">Pickup & Delivery</div>
@@ -402,7 +444,10 @@
             </div>
 
             <div class="day-row" data-day="0">
-                <div class="day-name" id="sunday">Sunday</div>
+                <div class="day-name-wrapper">
+                    <span class="day-name" id="sunday">Sunday</span>
+                    <span class="holiday-badge" id="sunday-holiday" style="display: none;"></span>
+                </div>
                 <div class="hours-info">
                     <div class="hours" id="sunday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="sunday-service">Pickup & Delivery</div>
@@ -453,16 +498,35 @@
 
         // Default hours configuration
         const defaultHours = {
-            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
-            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
-            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
-            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup' }
+            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
+            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' }
         };
 
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+        // Holiday display names mapping
+        const holidayDisplayNames = {
+            'new-years-day': { en: "New Year's Day", es: 'Año Nuevo' },
+            'family-day': { en: 'Family Day', es: 'Día de la Familia' },
+            'good-friday': { en: 'Good Friday', es: 'Viernes Santo' },
+            'easter-sunday': { en: 'Easter Sunday', es: 'Domingo de Pascua' },
+            'easter-monday': { en: 'Easter Monday', es: 'Lunes de Pascua' },
+            'victoria-day': { en: 'Victoria Day', es: 'Día de Victoria' },
+            'canada-day': { en: 'Canada Day', es: 'Día de Canadá' },
+            'bc-day': { en: 'BC Day', es: 'Día de BC' },
+            'labour-day': { en: 'Labour Day', es: 'Día del Trabajo' },
+            'thanksgiving': { en: 'Thanksgiving', es: 'Acción de Gracias' },
+            'remembrance-day': { en: 'Remembrance Day', es: 'Día del Recuerdo' },
+            'christmas-eve': { en: 'Christmas Eve', es: 'Nochebuena' },
+            'christmas-day': { en: 'Christmas Day', es: 'Navidad' },
+            'boxing-day': { en: 'Boxing Day', es: 'Boxing Day' },
+            'new-years-eve': { en: "New Year's Eve", es: 'Nochevieja' }
+        };
 
         function getBusinessHours() {
             const saved = localStorage.getItem('businessHours');
@@ -488,6 +552,7 @@
                 const dayData = hours[day];
                 const hoursEl = document.getElementById(`${day}-hours`);
                 const serviceEl = document.getElementById(`${day}-service`);
+                const holidayEl = document.getElementById(`${day}-holiday`);
 
                 if (dayData.open) {
                     hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
@@ -503,6 +568,15 @@
                     hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
                     serviceEl.textContent = isSpanish ? 'Cerrado' : 'Closed';
                     serviceEl.className = 'service-type closed-day';
+                }
+
+                // Handle holiday display
+                if (dayData.holiday && dayData.holidayName && holidayDisplayNames[dayData.holidayName]) {
+                    const holidayInfo = holidayDisplayNames[dayData.holidayName];
+                    holidayEl.textContent = isSpanish ? holidayInfo.es : holidayInfo.en;
+                    holidayEl.style.display = 'inline-block';
+                } else {
+                    holidayEl.style.display = 'none';
                 }
             });
         }
