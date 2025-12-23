@@ -314,6 +314,64 @@
         .toggle input:checked + .toggle-slider.holiday {
             background: linear-gradient(135deg, #d4462a, #8b2914);
         }
+
+        .toggle input:checked + .toggle-slider.early-delivery {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .early-delivery-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .early-delivery-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .early-delivery-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .early-delivery-label {
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .early-delivery-time {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .early-delivery-time input {
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2d3748;
+            background: white;
+        }
+
+        .early-delivery-time.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .early-delivery-note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 8px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -337,19 +395,28 @@
                 </div>
                 <div class="hours-inputs disabled" id="monday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="monday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="monday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="monday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="monday-early-delivery" onchange="toggleEarlyDelivery('monday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="monday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="monday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -398,19 +465,28 @@
                 </div>
                 <div class="hours-inputs disabled" id="tuesday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="tuesday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="tuesday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="tuesday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="tuesday-early-delivery" onchange="toggleEarlyDelivery('tuesday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="tuesday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="tuesday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -459,19 +535,28 @@
                 </div>
                 <div class="hours-inputs disabled" id="wednesday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="wednesday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="wednesday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="wednesday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="wednesday-early-delivery" onchange="toggleEarlyDelivery('wednesday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="wednesday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="wednesday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -520,19 +605,28 @@
                 </div>
                 <div class="hours-inputs disabled" id="thursday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="thursday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="thursday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="thursday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="thursday-early-delivery" onchange="toggleEarlyDelivery('thursday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="thursday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="thursday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -581,19 +675,28 @@
                 </div>
                 <div class="hours-inputs" id="friday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="friday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="friday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="friday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="friday-early-delivery" onchange="toggleEarlyDelivery('friday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="friday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="friday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -642,19 +745,28 @@
                 </div>
                 <div class="hours-inputs" id="saturday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="saturday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="saturday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="saturday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="saturday-early-delivery" onchange="toggleEarlyDelivery('saturday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="saturday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="saturday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -703,19 +815,28 @@
                 </div>
                 <div class="hours-inputs" id="sunday-inputs">
                     <div class="input-group">
-                        <label>Opening Time</label>
+                        <label>Pickup Starts</label>
                         <input type="time" id="sunday-start" value="16:00">
                     </div>
                     <div class="input-group">
                         <label>Closing Time</label>
                         <input type="time" id="sunday-end" value="21:00">
                     </div>
-                    <div class="input-group service-select">
-                        <label>Service Type</label>
-                        <select id="sunday-service">
-                            <option value="pickup">Pickup & Delivery</option>
-                            <option value="delivery">Delivery Only</option>
-                        </select>
+                    <div class="early-delivery-section">
+                        <div class="early-delivery-row">
+                            <div class="early-delivery-toggle">
+                                <span class="early-delivery-label">Early Delivery</span>
+                                <label class="toggle">
+                                    <input type="checkbox" id="sunday-early-delivery" onchange="toggleEarlyDelivery('sunday')">
+                                    <span class="toggle-slider early-delivery"></span>
+                                </label>
+                            </div>
+                            <div class="early-delivery-time disabled" id="sunday-early-delivery-time">
+                                <label class="early-delivery-label">Starts at:</label>
+                                <input type="time" id="sunday-delivery-start" value="09:30">
+                            </div>
+                        </div>
+                        <div class="early-delivery-note">Delivery only until pickup starts, then both available</div>
                     </div>
                 </div>
                 <div class="holiday-section">
@@ -765,13 +886,13 @@
         const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
         const defaultHours = {
-            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' }
+            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' }
         };
 
         function toggleDay(day) {
@@ -797,6 +918,17 @@
             }
         }
 
+        function toggleEarlyDelivery(day) {
+            const isEarlyDelivery = document.getElementById(`${day}-early-delivery`).checked;
+            const deliveryTime = document.getElementById(`${day}-early-delivery-time`);
+
+            if (isEarlyDelivery) {
+                deliveryTime.classList.remove('disabled');
+            } else {
+                deliveryTime.classList.add('disabled');
+            }
+        }
+
         function loadHours() {
             const saved = localStorage.getItem('businessHours');
             const hours = saved ? JSON.parse(saved) : defaultHours;
@@ -807,7 +939,6 @@
                 document.getElementById(`${day}-open`).checked = dayData.open;
                 document.getElementById(`${day}-start`).value = dayData.start;
                 document.getElementById(`${day}-end`).value = dayData.end;
-                document.getElementById(`${day}-service`).value = dayData.service;
 
                 // Load holiday data
                 const hasHoliday = dayData.holiday || false;
@@ -815,8 +946,15 @@
                 document.getElementById(`${day}-holiday`).checked = hasHoliday;
                 document.getElementById(`${day}-holiday-name`).value = holidayName;
 
+                // Load early delivery data
+                const hasEarlyDelivery = dayData.earlyDelivery || false;
+                const deliveryStart = dayData.deliveryStart || '09:30';
+                document.getElementById(`${day}-early-delivery`).checked = hasEarlyDelivery;
+                document.getElementById(`${day}-delivery-start`).value = deliveryStart;
+
                 toggleDay(day);
                 toggleHoliday(day);
+                toggleEarlyDelivery(day);
             });
         }
 
@@ -828,9 +966,11 @@
                     open: document.getElementById(`${day}-open`).checked,
                     start: document.getElementById(`${day}-start`).value,
                     end: document.getElementById(`${day}-end`).value,
-                    service: document.getElementById(`${day}-service`).value,
+                    service: 'pickup', // Always pickup & delivery after pickup starts
                     holiday: document.getElementById(`${day}-holiday`).checked,
-                    holidayName: document.getElementById(`${day}-holiday-name`).value
+                    holidayName: document.getElementById(`${day}-holiday-name`).value,
+                    earlyDelivery: document.getElementById(`${day}-early-delivery`).checked,
+                    deliveryStart: document.getElementById(`${day}-delivery-start`).value
                 };
             });
 
