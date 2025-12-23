@@ -236,6 +236,27 @@
         .hours-line .service-type {
             margin-top: 0;
         }
+
+        .service-breakdown {
+            font-size: 12px;
+            color: #718096;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .service-breakdown span {
+            display: inline-block;
+        }
+
+        .service-breakdown .delivery-time {
+            color: #7c3aed;
+            font-weight: 500;
+        }
+
+        .service-breakdown .pickup-time {
+            color: #228b22;
+            font-weight: 500;
+        }
         
         .order-buttons, .action-buttons {
             display: flex;
@@ -572,61 +593,58 @@
 
             dayNames.forEach(day => {
                 const dayData = hours[day];
-                const hoursInfoEl = document.querySelector(`[data-day="${dayNames.indexOf(day) === 0 ? 0 : dayNames.indexOf(day)}"] .hours-info, .day-row[data-day="${dayNames.indexOf(day)}"] .hours-info`);
                 const hoursEl = document.getElementById(`${day}-hours`);
                 const serviceEl = document.getElementById(`${day}-service`);
                 const holidayEl = document.getElementById(`${day}-holiday`);
 
+                // Get or create breakdown element
+                let breakdownEl = document.getElementById(`${day}-breakdown`);
+
                 if (dayData.open) {
                     // Check if early delivery is enabled
                     if (dayData.earlyDelivery && dayData.deliveryStart) {
-                        // Split hours display
-                        const deliveryText = isSpanish ? 'Solo a Domicilio' : 'Delivery Only';
-                        const pickupText = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
+                        // Show total hours span (delivery start to close)
+                        hoursEl.textContent = `${formatTime(dayData.deliveryStart)} - ${formatTime(dayData.end)}`;
+                        serviceEl.style.display = 'none';
 
-                        hoursEl.innerHTML = `${formatTime(dayData.deliveryStart)} - ${formatTime(dayData.start)}`;
-                        serviceEl.innerHTML = deliveryText;
-                        serviceEl.className = 'service-type delivery-only';
-
-                        // Add second line for pickup hours
-                        let secondLine = document.getElementById(`${day}-hours-line2`);
-                        if (!secondLine) {
-                            secondLine = document.createElement('div');
-                            secondLine.id = `${day}-hours-line2`;
-                            secondLine.className = 'hours-line';
-                            secondLine.innerHTML = `
-                                <div class="hours">${formatTime(dayData.start)} - ${formatTime(dayData.end)}</div>
-                                <div class="service-type pickup-delivery">${pickupText}</div>
-                            `;
-                            serviceEl.parentNode.appendChild(secondLine);
-                        } else {
-                            secondLine.innerHTML = `
-                                <div class="hours">${formatTime(dayData.start)} - ${formatTime(dayData.end)}</div>
-                                <div class="service-type pickup-delivery">${pickupText}</div>
-                            `;
-                            secondLine.style.display = 'flex';
+                        // Create or update breakdown
+                        if (!breakdownEl) {
+                            breakdownEl = document.createElement('div');
+                            breakdownEl.id = `${day}-breakdown`;
+                            breakdownEl.className = 'service-breakdown';
+                            serviceEl.parentNode.appendChild(breakdownEl);
                         }
+
+                        const deliveryLabel = isSpanish ? 'Domicilio' : 'Delivery';
+                        const pickupLabel = isSpanish ? 'Recoger' : 'Pickup';
+
+                        breakdownEl.innerHTML = `
+                            <span class="delivery-time">🚗 ${deliveryLabel} ${formatTime(dayData.deliveryStart)}</span>
+                            <span> • </span>
+                            <span class="pickup-time">📦 ${pickupLabel} ${formatTime(dayData.start)}</span>
+                        `;
+                        breakdownEl.style.display = 'block';
                     } else {
                         // Regular single hours display
                         hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
                         serviceEl.textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
                         serviceEl.className = 'service-type pickup-delivery';
+                        serviceEl.style.display = 'inline-block';
 
-                        // Hide second line if it exists
-                        const secondLine = document.getElementById(`${day}-hours-line2`);
-                        if (secondLine) {
-                            secondLine.style.display = 'none';
+                        // Hide breakdown if it exists
+                        if (breakdownEl) {
+                            breakdownEl.style.display = 'none';
                         }
                     }
                 } else {
                     hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
                     serviceEl.textContent = isSpanish ? 'Cerrado' : 'Closed';
                     serviceEl.className = 'service-type closed-day';
+                    serviceEl.style.display = 'inline-block';
 
-                    // Hide second line if it exists
-                    const secondLine = document.getElementById(`${day}-hours-line2`);
-                    if (secondLine) {
-                        secondLine.style.display = 'none';
+                    // Hide breakdown if it exists
+                    if (breakdownEl) {
+                        breakdownEl.style.display = 'none';
                     }
                 }
 
