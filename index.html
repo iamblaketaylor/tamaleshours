@@ -214,6 +214,28 @@
             flex-wrap: wrap;
             gap: 4px;
         }
+
+        .hours-info.split-hours {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hours-line {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hours-line .hours {
+            margin-bottom: 0;
+        }
+
+        .hours-line .service-type {
+            margin-top: 0;
+        }
         
         .order-buttons, .action-buttons {
             display: flex;
@@ -498,13 +520,13 @@
 
         // Default hours configuration
         const defaultHours = {
-            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' },
-            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '' }
+            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' },
+            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup', holiday: false, holidayName: '', earlyDelivery: false, deliveryStart: '09:30' }
         };
 
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -550,24 +572,62 @@
 
             dayNames.forEach(day => {
                 const dayData = hours[day];
+                const hoursInfoEl = document.querySelector(`[data-day="${dayNames.indexOf(day) === 0 ? 0 : dayNames.indexOf(day)}"] .hours-info, .day-row[data-day="${dayNames.indexOf(day)}"] .hours-info`);
                 const hoursEl = document.getElementById(`${day}-hours`);
                 const serviceEl = document.getElementById(`${day}-service`);
                 const holidayEl = document.getElementById(`${day}-holiday`);
 
                 if (dayData.open) {
-                    hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
+                    // Check if early delivery is enabled
+                    if (dayData.earlyDelivery && dayData.deliveryStart) {
+                        // Split hours display
+                        const deliveryText = isSpanish ? 'Solo a Domicilio' : 'Delivery Only';
+                        const pickupText = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
 
-                    if (dayData.service === 'pickup') {
+                        hoursEl.innerHTML = `${formatTime(dayData.deliveryStart)} - ${formatTime(dayData.start)}`;
+                        serviceEl.innerHTML = deliveryText;
+                        serviceEl.className = 'service-type delivery-only';
+
+                        // Add second line for pickup hours
+                        let secondLine = document.getElementById(`${day}-hours-line2`);
+                        if (!secondLine) {
+                            secondLine = document.createElement('div');
+                            secondLine.id = `${day}-hours-line2`;
+                            secondLine.className = 'hours-line';
+                            secondLine.innerHTML = `
+                                <div class="hours">${formatTime(dayData.start)} - ${formatTime(dayData.end)}</div>
+                                <div class="service-type pickup-delivery">${pickupText}</div>
+                            `;
+                            serviceEl.parentNode.appendChild(secondLine);
+                        } else {
+                            secondLine.innerHTML = `
+                                <div class="hours">${formatTime(dayData.start)} - ${formatTime(dayData.end)}</div>
+                                <div class="service-type pickup-delivery">${pickupText}</div>
+                            `;
+                            secondLine.style.display = 'flex';
+                        }
+                    } else {
+                        // Regular single hours display
+                        hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
                         serviceEl.textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
                         serviceEl.className = 'service-type pickup-delivery';
-                    } else {
-                        serviceEl.textContent = isSpanish ? 'Solo a Domicilio' : 'Delivery Only';
-                        serviceEl.className = 'service-type delivery-only';
+
+                        // Hide second line if it exists
+                        const secondLine = document.getElementById(`${day}-hours-line2`);
+                        if (secondLine) {
+                            secondLine.style.display = 'none';
+                        }
                     }
                 } else {
                     hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
                     serviceEl.textContent = isSpanish ? 'Cerrado' : 'Closed';
                     serviceEl.className = 'service-type closed-day';
+
+                    // Hide second line if it exists
+                    const secondLine = document.getElementById(`${day}-hours-line2`);
+                    if (secondLine) {
+                        secondLine.style.display = 'none';
+                    }
                 }
 
                 // Handle holiday display
@@ -647,7 +707,8 @@
                     hours[index] = {
                         start: timeToMinutes(dayData.start),
                         end: timeToMinutes(dayData.end),
-                        service: dayData.service
+                        earlyDelivery: dayData.earlyDelivery || false,
+                        deliveryStart: dayData.deliveryStart ? timeToMinutes(dayData.deliveryStart) : null
                     };
                 } else {
                     hours[index] = null;
@@ -655,30 +716,39 @@
             });
 
             const todayHours = hours[currentDay];
+            const dayNamesDisplay = isSpanish ?
+                ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
+                ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-            if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
+            // Determine the effective opening time (earliest of delivery or pickup)
+            let effectiveStart = todayHours ? todayHours.start : null;
+            if (todayHours && todayHours.earlyDelivery && todayHours.deliveryStart) {
+                effectiveStart = todayHours.deliveryStart;
+            }
+
+            if (todayHours && currentTime >= effectiveStart && currentTime < todayHours.end) {
                 // Currently open
                 isOpen = true;
-                if (isSpanish) {
-                    statusText = todayHours.service === 'pickup' ?
-                        '🟢 ABIERTO - A Domicilio y Recoger' :
-                        '🟢 ABIERTO - A Domicilio';
-                } else {
-                    statusText = todayHours.service === 'pickup' ?
-                        '🟢 OPEN NOW - Pickup & Delivery' :
+
+                // Determine current service type
+                if (todayHours.earlyDelivery && todayHours.deliveryStart && currentTime < todayHours.start) {
+                    // During early delivery hours (before pickup starts)
+                    statusText = isSpanish ?
+                        '🟢 ABIERTO - Solo a Domicilio' :
                         '🟢 OPEN NOW - Delivery Only';
+                } else {
+                    // During pickup & delivery hours
+                    statusText = isSpanish ?
+                        '🟢 ABIERTO - A Domicilio y Recoger' :
+                        '🟢 OPEN NOW - Pickup & Delivery';
                 }
             } else {
                 // Currently closed - find next opening
                 isOpen = false;
 
-                const dayNamesDisplay = isSpanish ?
-                    ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
-                    ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
                 // Check if opening later today
-                if (todayHours && currentTime < todayHours.start) {
-                    const minutesUntilOpen = todayHours.start - currentTime;
+                if (todayHours && currentTime < effectiveStart) {
+                    const minutesUntilOpen = effectiveStart - currentTime;
                     const hrs = Math.floor(minutesUntilOpen / 60);
                     const mins = minutesUntilOpen % 60;
 
@@ -689,9 +759,15 @@
                         timeString = isSpanish ? `${mins} minutos` : `${mins} minutes`;
                     }
 
+                    // Show what service will be available first
+                    let serviceNote = '';
+                    if (todayHours.earlyDelivery && todayHours.deliveryStart) {
+                        serviceNote = isSpanish ? ' (a domicilio)' : ' (delivery)';
+                    }
+
                     statusText = isSpanish ?
-                        `🔴 CERRADO - Abre en ${timeString}` :
-                        `🔴 CLOSED - Opens in ${timeString}`;
+                        `🔴 CERRADO - Abre en ${timeString}${serviceNote}` :
+                        `🔴 CLOSED - Opens in ${timeString}${serviceNote}`;
                 } else {
                     // Find next opening day
                     let nextDay = (currentDay + 1) % 7;
