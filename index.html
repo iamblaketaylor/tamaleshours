@@ -388,23 +388,23 @@
             <div class="day-row" data-day="5">
                 <div class="day-name" id="friday">Friday</div>
                 <div class="hours-info">
-                    <div class="hours">4:00 PM - 9:00 PM</div>
+                    <div class="hours" id="friday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="friday-service">Pickup & Delivery</div>
                 </div>
             </div>
-            
+
             <div class="day-row" data-day="6">
                 <div class="day-name" id="saturday">Saturday</div>
                 <div class="hours-info">
-                    <div class="hours">4:00 PM - 9:00 PM</div>
+                    <div class="hours" id="saturday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="saturday-service">Pickup & Delivery</div>
                 </div>
             </div>
-            
+
             <div class="day-row" data-day="0">
                 <div class="day-name" id="sunday">Sunday</div>
                 <div class="hours-info">
-                    <div class="hours">4:00 PM - 9:00 PM</div>
+                    <div class="hours" id="sunday-hours">4:00 PM - 9:00 PM</div>
                     <div class="service-type pickup-delivery" id="sunday-service">Pickup & Delivery</div>
                 </div>
             </div>
@@ -450,17 +450,73 @@
 
     <script>
         let isSpanish = false;
-        
+
+        // Default hours configuration
+        const defaultHours = {
+            sunday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
+            monday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
+            tuesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
+            wednesday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
+            thursday: { open: false, start: '16:00', end: '21:00', service: 'pickup' },
+            friday: { open: true, start: '16:00', end: '21:00', service: 'pickup' },
+            saturday: { open: true, start: '16:00', end: '21:00', service: 'pickup' }
+        };
+
+        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+        function getBusinessHours() {
+            const saved = localStorage.getItem('businessHours');
+            return saved ? JSON.parse(saved) : defaultHours;
+        }
+
+        function formatTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+            return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        }
+
+        function timeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        function updateHoursDisplay() {
+            const hours = getBusinessHours();
+
+            dayNames.forEach(day => {
+                const dayData = hours[day];
+                const hoursEl = document.getElementById(`${day}-hours`);
+                const serviceEl = document.getElementById(`${day}-service`);
+
+                if (dayData.open) {
+                    hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
+
+                    if (dayData.service === 'pickup') {
+                        serviceEl.textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
+                        serviceEl.className = 'service-type pickup-delivery';
+                    } else {
+                        serviceEl.textContent = isSpanish ? 'Solo a Domicilio' : 'Delivery Only';
+                        serviceEl.className = 'service-type delivery-only';
+                    }
+                } else {
+                    hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
+                    serviceEl.textContent = isSpanish ? 'Cerrado' : 'Closed';
+                    serviceEl.className = 'service-type closed-day';
+                }
+            });
+        }
+
         function switchLanguage() {
             isSpanish = !isSpanish;
-            
+
             // Update language button
             const langBtn = document.querySelector('.language-toggle');
             langBtn.textContent = isSpanish ? '🇺🇸 English' : '🇲🇽 Español';
-            
+
             // Update title
             document.getElementById('title').textContent = isSpanish ? 'Horarios de Atención' : 'Business Hours';
-            
+
             // Update days
             document.getElementById('monday').textContent = isSpanish ? 'Lunes' : 'Monday';
             document.getElementById('tuesday').textContent = isSpanish ? 'Martes' : 'Tuesday';
@@ -469,43 +525,31 @@
             document.getElementById('friday').textContent = isSpanish ? 'Viernes' : 'Friday';
             document.getElementById('saturday').textContent = isSpanish ? 'Sábado' : 'Saturday';
             document.getElementById('sunday').textContent = isSpanish ? 'Domingo' : 'Sunday';
-            
-            // Update services
-            document.getElementById('monday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('tuesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('wednesday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('thursday-service').textContent = isSpanish ? 'Cerrado' : 'Closed';
-            document.getElementById('friday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
-            document.getElementById('saturday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
-            document.getElementById('sunday-service').textContent = isSpanish ? 'A Domicilio y Recoger' : 'Pickup & Delivery';
-            
-            // Update closed hours text
-            document.getElementById('monday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
-            document.getElementById('tuesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
-            document.getElementById('wednesday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
-            document.getElementById('thursday-hours').textContent = isSpanish ? 'CERRADO' : 'CLOSED';
-            
+
+            // Update hours display with current language
+            updateHoursDisplay();
+
             // Update other text
             document.getElementById('note-label').textContent = isSpanish ? 'Nota:' : 'Note:';
             document.getElementById('note-text').textContent = isSpanish ? 'La disponibilidad del servicio varía según el día. Consulte las etiquetas de colores para las opciones de recoger o entrega.' : 'Service availability varies by day. Check the colored labels above for pickup vs delivery options.';
             document.getElementById('follow-us').textContent = isSpanish ? 'Síguenos' : 'Follow Us';
             document.getElementById('directions').textContent = isSpanish ? 'Obtener Direcciones' : 'Get Directions';
             document.getElementById('reviews-header').textContent = isSpanish ? 'Reseñas de Google' : 'Google Reviews';
-            
+
             // Update reviews
             document.getElementById('review1').textContent = isSpanish ? '"¡Tamales absolutamente deliciosos! La masa está perfectamente cocida al vapor y el relleno es muy sabroso. ¡La mejor comida mexicana en Port Coquitlam!"' : '"Absolutely delicious tamales! The masa is perfectly steamed and the filling is so flavorful. Best Mexican food in Port Coquitlam!"';
             document.getElementById('review2').textContent = isSpanish ? '"Entrega rápida y sabor auténtico. Los tamales de pollo me recuerdan a la cocina de mi abuela. ¡Definitivamente volveré a ordenar!"' : '"Fast delivery and authentic taste. The chicken tamales remind me of my grandmother\'s cooking. Will definitely order again!"';
             document.getElementById('review3').textContent = isSpanish ? '"Excelente servicio y comida increíble. Las opciones vegetarianas también son fantásticas. ¡Muy recomendable!"' : '"Great service and amazing food. The vegetarian options are fantastic too. Highly recommend!"';
-            
-            // Update current status if it exists
+
+            // Update current status
             updateCurrentStatus();
         }
-        
+
         function updateCurrentStatus() {
             const now = new Date();
             const currentDay = now.getDay();
             const currentTime = now.getHours() * 60 + now.getMinutes();
-            
+
             // Highlight today
             document.querySelectorAll('.day-row').forEach(row => {
                 row.classList.remove('today');
@@ -513,33 +557,40 @@
                     row.classList.add('today');
                 }
             });
-            
+
             const statusDiv = document.getElementById('current-status');
             let isOpen = false;
             let statusText = '';
-            
-            // Define business hours
-            const hours = {
-                0: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Sunday - pickup & delivery
-                1: null, // Monday - closed
-                2: null, // Tuesday - closed
-                3: null, // Wednesday - closed
-                4: null, // Thursday - closed
-                5: { start: 16 * 60, end: 21 * 60, service: 'pickup' }, // Friday
-                6: { start: 16 * 60, end: 21 * 60, service: 'pickup' } // Saturday
-            };
-            
+
+            // Get business hours from localStorage or defaults
+            const businessHours = getBusinessHours();
+
+            // Convert to the format needed for status checking
+            const hours = {};
+            dayNames.forEach((day, index) => {
+                const dayData = businessHours[day];
+                if (dayData.open) {
+                    hours[index] = {
+                        start: timeToMinutes(dayData.start),
+                        end: timeToMinutes(dayData.end),
+                        service: dayData.service
+                    };
+                } else {
+                    hours[index] = null;
+                }
+            });
+
             const todayHours = hours[currentDay];
-            
+
             if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
                 isOpen = true;
                 if (isSpanish) {
-                    statusText = todayHours.service === 'pickup' ? 
-                        '🟢 ABIERTO - A Domicilio y Recoger' : 
+                    statusText = todayHours.service === 'pickup' ?
+                        '🟢 ABIERTO - A Domicilio y Recoger' :
                         '🟢 ABIERTO - A Domicilio';
                 } else {
-                    statusText = todayHours.service === 'pickup' ? 
-                        '🟢 OPEN NOW - Pickup & Delivery' : 
+                    statusText = todayHours.service === 'pickup' ?
+                        '🟢 OPEN NOW - Pickup & Delivery' :
                         '🟢 OPEN NOW - Delivery Only';
                 }
             } else {
@@ -548,7 +599,7 @@
                     // Calculate time until opening or closing
                     let nextTime;
                     let nextAction;
-                    
+
                     if (currentTime < todayHours.start) {
                         // Before opening
                         nextTime = todayHours.start - currentTime;
@@ -559,26 +610,26 @@
                         while (nextDay !== currentDay && !hours[nextDay]) {
                             nextDay = (nextDay + 1) % 7;
                         }
-                        
+
                         if (hours[nextDay]) {
-                            const dayNames = isSpanish ? 
+                            const dayNamesDisplay = isSpanish ?
                                 ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
                                 ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                            
-                            statusText = isSpanish ? 
-                                `🔴 CERRADO - Abre ${dayNames[nextDay]}` :
-                                `🔴 CLOSED - Opens ${dayNames[nextDay]}`;
+
+                            statusText = isSpanish ?
+                                `🔴 CERRADO - Abre ${dayNamesDisplay[nextDay]}` :
+                                `🔴 CLOSED - Opens ${dayNamesDisplay[nextDay]}`;
                         }
                     }
-                    
+
                     if (nextTime && nextAction) {
-                        const hours = Math.floor(nextTime / 60);
-                        const minutes = nextTime % 60;
-                        const timeString = hours > 0 ? 
-                            (isSpanish ? `${hours}h ${minutes}m` : `${hours}h ${minutes}m`) :
-                            (isSpanish ? `${minutes} minutos` : `${minutes} minutes`);
-                        
-                        statusText = isSpanish ? 
+                        const hrs = Math.floor(nextTime / 60);
+                        const mins = nextTime % 60;
+                        const timeString = hrs > 0 ?
+                            (isSpanish ? `${hrs}h ${mins}m` : `${hrs}h ${mins}m`) :
+                            (isSpanish ? `${mins} minutos` : `${mins} minutes`);
+
+                        statusText = isSpanish ?
                             `🔴 CERRADO - ${nextAction} en ${timeString}` :
                             `🔴 CLOSED - ${nextAction} in ${timeString}`;
                     }
@@ -588,25 +639,26 @@
                     while (nextDay !== currentDay && !hours[nextDay]) {
                         nextDay = (nextDay + 1) % 7;
                     }
-                    
+
                     if (hours[nextDay]) {
-                        const dayNames = isSpanish ? 
+                        const dayNamesDisplay = isSpanish ?
                             ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
                             ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                        
-                        statusText = isSpanish ? 
-                            `🔴 CERRADO HOY - Abre ${dayNames[nextDay]}` :
-                            `🔴 CLOSED TODAY - Opens ${dayNames[nextDay]}`;
+
+                        statusText = isSpanish ?
+                            `🔴 CERRADO HOY - Abre ${dayNamesDisplay[nextDay]}` :
+                            `🔴 CLOSED TODAY - Opens ${dayNamesDisplay[nextDay]}`;
                     }
                 }
             }
-            
+
             statusDiv.textContent = statusText;
             statusDiv.className = 'current-status ' + (isOpen ? 'open' : 'closed');
         }
-        
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            updateHoursDisplay();
             updateCurrentStatus();
             // Update every minute
             setInterval(updateCurrentStatus, 60000);
