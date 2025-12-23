@@ -643,7 +643,7 @@
             const hours = {};
             dayNames.forEach((day, index) => {
                 const dayData = businessHours[day];
-                if (dayData.open) {
+                if (dayData && dayData.open) {
                     hours[index] = {
                         start: timeToMinutes(dayData.start),
                         end: timeToMinutes(dayData.end),
@@ -657,6 +657,7 @@
             const todayHours = hours[currentDay];
 
             if (todayHours && currentTime >= todayHours.start && currentTime < todayHours.end) {
+                // Currently open
                 isOpen = true;
                 if (isSpanish) {
                     statusText = todayHours.service === 'pickup' ?
@@ -668,60 +669,46 @@
                         '🟢 OPEN NOW - Delivery Only';
                 }
             } else {
+                // Currently closed - find next opening
                 isOpen = false;
-                if (todayHours) {
-                    // Calculate time until opening or closing
-                    let nextTime;
-                    let nextAction;
 
-                    if (currentTime < todayHours.start) {
-                        // Before opening
-                        nextTime = todayHours.start - currentTime;
-                        nextAction = isSpanish ? 'Abre' : 'Opens';
+                const dayNamesDisplay = isSpanish ?
+                    ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
+                    ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+                // Check if opening later today
+                if (todayHours && currentTime < todayHours.start) {
+                    const minutesUntilOpen = todayHours.start - currentTime;
+                    const hrs = Math.floor(minutesUntilOpen / 60);
+                    const mins = minutesUntilOpen % 60;
+
+                    let timeString;
+                    if (hrs > 0) {
+                        timeString = `${hrs}h ${mins}m`;
                     } else {
-                        // After closing - find next opening day
-                        let nextDay = (currentDay + 1) % 7;
-                        while (nextDay !== currentDay && !hours[nextDay]) {
-                            nextDay = (nextDay + 1) % 7;
-                        }
-
-                        if (hours[nextDay]) {
-                            const dayNamesDisplay = isSpanish ?
-                                ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
-                                ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-                            statusText = isSpanish ?
-                                `🔴 CERRADO - Abre ${dayNamesDisplay[nextDay]}` :
-                                `🔴 CLOSED - Opens ${dayNamesDisplay[nextDay]}`;
-                        }
+                        timeString = isSpanish ? `${mins} minutos` : `${mins} minutes`;
                     }
 
-                    if (nextTime && nextAction) {
-                        const hrs = Math.floor(nextTime / 60);
-                        const mins = nextTime % 60;
-                        const timeString = hrs > 0 ?
-                            (isSpanish ? `${hrs}h ${mins}m` : `${hrs}h ${mins}m`) :
-                            (isSpanish ? `${mins} minutos` : `${mins} minutes`);
-
-                        statusText = isSpanish ?
-                            `🔴 CERRADO - ${nextAction} en ${timeString}` :
-                            `🔴 CLOSED - ${nextAction} in ${timeString}`;
-                    }
+                    statusText = isSpanish ?
+                        `🔴 CERRADO - Abre en ${timeString}` :
+                        `🔴 CLOSED - Opens in ${timeString}`;
                 } else {
-                    // Closed today - find next opening day
+                    // Find next opening day
                     let nextDay = (currentDay + 1) % 7;
-                    while (nextDay !== currentDay && !hours[nextDay]) {
+                    let daysChecked = 0;
+
+                    while (!hours[nextDay] && daysChecked < 7) {
                         nextDay = (nextDay + 1) % 7;
+                        daysChecked++;
                     }
 
                     if (hours[nextDay]) {
-                        const dayNamesDisplay = isSpanish ?
-                            ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] :
-                            ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
                         statusText = isSpanish ?
-                            `🔴 CERRADO HOY - Abre ${dayNamesDisplay[nextDay]}` :
-                            `🔴 CLOSED TODAY - Opens ${dayNamesDisplay[nextDay]}`;
+                            `🔴 CERRADO - Abre ${dayNamesDisplay[nextDay]}` :
+                            `🔴 CLOSED - Opens ${dayNamesDisplay[nextDay]}`;
+                    } else {
+                        // No open days configured
+                        statusText = isSpanish ? '🔴 CERRADO' : '🔴 CLOSED';
                     }
                 }
             }
