@@ -237,25 +237,30 @@
             margin-top: 0;
         }
 
-        .service-breakdown {
-            font-size: 12px;
-            color: #718096;
-            text-align: right;
+        .service-badges {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
             margin-top: 4px;
         }
 
-        .service-breakdown span {
-            display: inline-block;
+        .service-badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
-        .service-breakdown .delivery-time {
-            color: #7c3aed;
-            font-weight: 500;
+        .service-badge.delivery {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
         }
 
-        .service-breakdown .pickup-time {
-            color: #228b22;
-            font-weight: 500;
+        .service-badge.pickup {
+            background: linear-gradient(135deg, #228b22, #006400);
+            color: white;
         }
         
         .order-buttons, .action-buttons {
@@ -600,30 +605,32 @@
                 // Get or create breakdown element
                 let breakdownEl = document.getElementById(`${day}-breakdown`);
 
+                // Get or create badges container
+                let badgesEl = document.getElementById(`${day}-badges`);
+
                 if (dayData.open) {
                     // Check if early delivery is enabled
                     if (dayData.earlyDelivery && dayData.deliveryStart) {
-                        // Show total hours span (delivery start to close)
-                        hoursEl.textContent = `${formatTime(dayData.deliveryStart)} - ${formatTime(dayData.end)}`;
+                        // Show pickup hours only (main business hours)
+                        hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
                         serviceEl.style.display = 'none';
 
-                        // Create or update breakdown
-                        if (!breakdownEl) {
-                            breakdownEl = document.createElement('div');
-                            breakdownEl.id = `${day}-breakdown`;
-                            breakdownEl.className = 'service-breakdown';
-                            serviceEl.parentNode.appendChild(breakdownEl);
+                        // Create or update badges container
+                        if (!badgesEl) {
+                            badgesEl = document.createElement('div');
+                            badgesEl.id = `${day}-badges`;
+                            badgesEl.className = 'service-badges';
+                            serviceEl.parentNode.appendChild(badgesEl);
                         }
 
                         const deliveryLabel = isSpanish ? 'Domicilio' : 'Delivery';
                         const pickupLabel = isSpanish ? 'Recoger' : 'Pickup';
 
-                        breakdownEl.innerHTML = `
-                            <span class="delivery-time">🚗 ${deliveryLabel} ${formatTime(dayData.deliveryStart)}</span>
-                            <span> • </span>
-                            <span class="pickup-time">📦 ${pickupLabel} ${formatTime(dayData.start)}</span>
+                        badgesEl.innerHTML = `
+                            <span class="service-badge delivery">🚗 ${deliveryLabel} ${formatTime(dayData.deliveryStart)}</span>
+                            <span class="service-badge pickup">📦 ${pickupLabel} ${formatTime(dayData.start)}</span>
                         `;
-                        breakdownEl.style.display = 'block';
+                        badgesEl.style.display = 'flex';
                     } else {
                         // Regular single hours display
                         hoursEl.textContent = `${formatTime(dayData.start)} - ${formatTime(dayData.end)}`;
@@ -631,10 +638,15 @@
                         serviceEl.className = 'service-type pickup-delivery';
                         serviceEl.style.display = 'inline-block';
 
-                        // Hide breakdown if it exists
-                        if (breakdownEl) {
-                            breakdownEl.style.display = 'none';
+                        // Hide badges if they exist
+                        if (badgesEl) {
+                            badgesEl.style.display = 'none';
                         }
+                    }
+
+                    // Hide breakdown if it exists (cleanup from old version)
+                    if (breakdownEl) {
+                        breakdownEl.style.display = 'none';
                     }
                 } else {
                     hoursEl.textContent = isSpanish ? 'CERRADO' : 'CLOSED';
@@ -642,7 +654,10 @@
                     serviceEl.className = 'service-type closed-day';
                     serviceEl.style.display = 'inline-block';
 
-                    // Hide breakdown if it exists
+                    // Hide badges and breakdown if they exist
+                    if (badgesEl) {
+                        badgesEl.style.display = 'none';
+                    }
                     if (breakdownEl) {
                         breakdownEl.style.display = 'none';
                     }
